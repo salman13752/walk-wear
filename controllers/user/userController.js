@@ -7,6 +7,7 @@ const session = require('express-session'); // For managing user sessions
 
 
 
+
 // Page Not Found Handler
 const pageNotFound = async (req, res) => {
     try {
@@ -19,7 +20,15 @@ const pageNotFound = async (req, res) => {
 // Load Home Page
 const loadHomepage = async (req, res) => {
     try {
-        return res.render('home'); // Render the home page
+        const user = req.session.user;
+        if(user){
+          console.log("user",user)
+          const userData = await User.findOne({_id:user})
+        res.render("home",{user:userData})
+        }else{
+          return  res.render("home")
+        }
+       
     } catch (error) {
         console.log('Home Page not found');
         res.status(500).send('Server Error');
