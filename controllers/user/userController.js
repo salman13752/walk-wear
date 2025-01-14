@@ -178,10 +178,10 @@ const verifyOtp = async (req, res) => {
   };
 
 
-  const loadLoginPage = async (req, res) => {
+  const loadLogin = async (req, res) => {
     try {
       if (!req.session.user) {
-        return res.render("userLoginPage");
+        return res.render("login");
       } else {
         res.redirect("/");
       }
@@ -193,23 +193,23 @@ const verifyOtp = async (req, res) => {
 
 
 
-  const loginVerification = async (req, res) => {
+  const login = async (req, res) => {
     try {
       const { email, password } = req.body;
   
       const findUser = await User.findOne({ isAdmin: 0, email: email });
       if (!findUser) {
-        return res.render("userLoginPage", { message: "user not found" });
+        return res.render("login", { message: "user not found" });
       }
       if (findUser.isBlocked) {
-        return res.render("userLoginPage", {
+        return res.render("login", {
           message: "user is blocked by admin",
         });
       }
   
-      const passwordMatch = await bycrypt.compare(password, findUser.password);
+      const passwordMatch = await bcrypt.compare(password, findUser.password);
       if (!passwordMatch) {
-        return res.render("userLoginPage", { message: "incorrect password" });
+        return res.render("login", { message: "incorrect password" });
       }
   
       req.session.user = findUser._id;
@@ -217,7 +217,7 @@ const verifyOtp = async (req, res) => {
       res.redirect("/");
     } catch (error) {
       console.log("error at login page", error);  
-      res.render("userLoginPage", {
+      res.render("login", {
         message: "Login failed , please try again later",
       });
     }
@@ -251,7 +251,7 @@ module.exports = {
     signup,
     verifyOtp,
     resendOtp,
-    loadLoginPage,
-    loginVerification,
+    loadLogin,
+    login,
     logout,
 };

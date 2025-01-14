@@ -11,8 +11,8 @@ userRoute.get("/page-not-found", userController. pageNotFound);
 userRoute.get("/", userController.loadHomepage);
 
 //for login route
-userRoute.get("/login", userController.loadLoginPage);
-userRoute.post("/login", userController.loginVerification);
+userRoute.get("/login", userController.loadLogin);
+userRoute.post("/login", userController.login);
 
 //for registeration page
 userRoute.get("/signup", userController.loadRegisterPage);
@@ -39,6 +39,9 @@ userRoute.get(
       res.redirect("/");
     }
   );
+
+// for user login
+
 
 
 
