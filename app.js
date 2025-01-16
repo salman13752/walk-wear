@@ -6,7 +6,9 @@ const env = require("dotenv").config();
 const db = require("./config/db");
 const passport = require("passport");
 require("./config/passport");
-const userSide = require("./routes/user/userRouter");    
+const userSide = require("./routes/user/userRouter");   
+const adminRouter = require("./routes/admin/adminRouter");
+
 db();
 
 app.use(express.json());
@@ -46,6 +48,9 @@ app.set("views", [
 
 //setting up user routee
 app.use("/", userSide);
+app.use("/admin",adminRouter)
+
+
 
 app.listen(process.env.PORT, () => {
   console.log("server running on 3005"); 

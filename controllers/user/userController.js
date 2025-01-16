@@ -22,7 +22,6 @@ const loadHomepage = async (req, res) => {
     try {
         const user = req.session.user;
         if(user){
-          console.log("user",user)
           const userData = await User.findOne({_id:user})
         res.render("home",{user:userData})
         }else{
