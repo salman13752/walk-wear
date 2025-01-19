@@ -7,7 +7,7 @@ const brandSchema = new Schema({
     required: true,
   },
   brandImage: {
-    type: [String],
+    type: String,
     required: true,
   },
   isBlocked: {
@@ -20,6 +20,6 @@ const brandSchema = new Schema({
   },
 });
 
-const Brand = mongoose.model("Brand", brandSchema);
+const brands = mongoose.model("Brands", brandSchema);
 
-module.exports = Brand;
+module.exports = brands;

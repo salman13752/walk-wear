@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link rel="stylesheet" href=""> <!-- Link to your CSS file -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <style>
+
+
+    /* Add inline styles for quick reference */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    .product-details {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .product-image {
+      max-width: 300px;
+      border-radius: 8px;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      color: #333;
+    }
+
+    p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+    }
+
+    .add-to-cart {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .add-to-cart:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="product-details">
+    <div class="product-header">
+      <% if (product.productImage.length > 0) { %>
+        <img src="<%= product.productImage[0] %>" alt="<%= product.productName %>" class="product-image">
+      <% } else { %>
+        <img src="/images/default-product.png" alt="Default Product Image" class="product-image">
+      <% } %>
+
+      <div class="product-info">
+        <h1><%= product.productName %></h1>
+        <p>Description: <%= product.description %></p>
+        <p>Category: <%= product.category || "Not specified" %></p>
+      </div>
+    </div>
+
+    <% if (product.combos && product.combos.length > 0) { %>
+      <h3>Available Combos:</h3>
+      <ul>
+        <% product.combos.forEach(combo => { %>
+          <li>
+            <strong>Size:</strong> <%= combo.Size %>, 
+            <strong>Colour:</strong> <%= combo.Colour %> , 
+            <strong>Price:</strong> ₹<%= combo.salePrice %>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>No combos available for this product.</p>
+    <% } %>
+
+    <a href="/addToCart?id=<%= product._id %>" class="add-to-cart">Add to Cart</a>
+  </div>
+</body>
+</html>

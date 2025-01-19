@@ -4,6 +4,8 @@ require('dotenv').config(); // To load environment variables
 const bcrypt = require('bcrypt'); // For hashing passwords
 const User = require('../../models/userSchema'); // User model for MongoDB
 const session = require('express-session'); // For managing user sessions
+const Product = require('../../models/productSchema'); // Product model for MongoDB
+const Category = require('../../models/categorySchema'); // Category model for MongoDB
 
 
 
@@ -21,15 +23,33 @@ const pageNotFound = async (req, res) => {
 const loadHomepage = async (req, res) => {
     try {
         const user = req.session.user;
+        
+        const CategoryData = await Category.find({isListed:true})
+        const ProductData = await Product.find({
+            isBlocked: false,
+        })
+        
+         .sort({ createdAt: -1 })
+         
+         const formattedProducts = ProductData.map(product => ({
+          productName: product.productName,
+          description: product.description,
+          combos: product.combos.map(combo => ({
+              ram: combo.ram,
+              storage: combo.storage,
+              salePrice: combo.salePrice
+          })),
+          productImage: product.productImage
+      }));
         if(user){
           const userData = await User.findOne({_id:user})
-        res.render("home",{user:userData})
+        res.render("home",{user:userData,product:formattedProducts})
         }else{
-          return  res.render("home")
+          return  res.render("home",{product:ProductData})
         }
        
     } catch (error) {
-        console.log('Home Page not found');
+        console.log('Home Page not found',error);
         res.status(500).send('Server Error');
     }
 };

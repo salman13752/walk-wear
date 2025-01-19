@@ -2,6 +2,9 @@ const User = require("../../models/userSchema")
 const path = require('path');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { session } = require("passport");
+const Product = require("../../models/productSchema");
+
 
 
 
@@ -9,6 +12,7 @@ const loadlogin = async (req, res) => {
     if (req.session.admin) {
       res.redirect("/admin");
     } else {
+      
       res.render("adminLoginPage");
     }
   };
@@ -21,7 +25,9 @@ const loadlogin = async (req, res) => {
       if (admin) {
         const passwordMatch = await bcrypt.compare(password, admin.password);
         if (passwordMatch) {
-          req.session.admin = admin;
+          req.session.admin = admin; 
+          console.log(req.session.admin);
+           
           return res.redirect("/admin");
         } else {
           return res.render("adminLoginPage", {
@@ -41,36 +47,68 @@ const loadlogin = async (req, res) => {
 
 
   //function to load dashboard
-const loaddashboard = async (req, res) => {
-    try {
-      // const totalProducts = await Products.findOne({}).countDocuments();
-      const totalUsers = await User.findOne({}).countDocuments();
+// const loaddashboard = async (req, res) => {
+//     try {
+//       if(req.session.admin){
+//       const totalUsers = await User.findOne({}).countDocuments();
+//       res.render("admindash", {
+//         totalProducts: 0,
+//         users: 0,
+//       });
+//     }else{
+//       res.redirect("/admin/login")
+//     }}
+//     catch (error) {
+//       console.log(error);
+//       res.redirect("/page-not-found");
+//     }
+//   }
 
+const loaddashboard = async (req, res) => {
+  try {
+    // Check if admin is logged in
+    if (req.session.admin) {
+      // Fetch total users (countDocuments is more efficient for counting)
+      const totalUsers = await User.findOne({}).countDocuments();
       
-      res.render("admindash", {
-        totalProducts: 0,
-        users: 0,
+      // Fetch total products (replace with your Product model logic if needed)
+      const totalProducts = await Product.countDocuments();
+
+      // Render the admin dashboard with actual data
+      return res.render("admindash", {
+        totalProducts,
+        totalUsers,
+      });
+    } else {
+      // Redirect to admin login if not logged in
+      return res.redirect("/admin/login");
+    }
+  } catch (error) {
+    console.error("Error loading admin dashboard:", error);
+    // Redirect to a custom error page
+    return res.redirect("/page-not-found");
+  }
+};
+
+
+
+  
+  //function for loggingout admin page
+  const logout = async (req, res) => {
+    try {
+      req.session.destroy((err) => {
+        if (err) {
+          console.log("Error in destroying session");
+          return res.status(500).send("Error during logout.");
+        }
+        res.redirect("/admin/login");  
       });
     } catch (error) {
-      console.log(error);
-      res.redirect("/page-not-found");
+      console.log("Error at logout:", error);
+      res.status(500).send("Internal server error.");
     }
   };
   
-  //function for loggingout admin page
-const logout = async (req, res) => {
-  try {
-    req.session.destroy(err=>{
-      if(err){
-        console.log("Error in destroying session");
-        
-      }
-      res.redirect("admin/login")
-    })
-  } catch (error) {
-    console.log("Error at logout:", error);
-  }
-}
 
 
 

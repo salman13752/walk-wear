@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const session = require("express-session");
+const session = require('express-session');
 const env = require("dotenv").config();
 const db = require("./config/db");
 const passport = require("passport");
@@ -13,6 +13,8 @@ db();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 //configuring session
 app.use(
   session({
@@ -31,10 +33,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-
-
-
+//middleware for not caching
+app.use((req, res, next) => {
+  res.set("cache-control", "no-store");
+  next();
+});
 
 
 app.use(express.static(path.join(__dirname, "public")));

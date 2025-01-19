@@ -49,34 +49,35 @@ const userInfo = async (req, res) => {
 };
 
 // //for blocking user
-// const userBlocked = async (req, res) => {
-//   try {
-//     let id = req.query.id;
-//     const result = await User.updateOne(
-//       { _id: id },
-//       { $set: { isBlocked: true } }
-//     );
-//     return res.json({ response: "user blocked successfully" });
-//   } catch (error) {
-//     console.log(("error at blocking user", error));
-//     res.status(500).json({ response: "an error try again" });
-//   }
-// };
+const userBlocked= async (req, res) => {
+  try {
+    let id = req.query.id;
+    const result = await User.updateOne(
+      { _id: id },
+      { $set: { isBlocked: true } }
+    );
+    return res.json({ response: "user blocked successfully" });
+  } catch (error) {
+    console.log(("error at blocking user", error));
+    res.status(500).json({ response: "an error try again" });
+  }
+};
 
 // //for unblocking user
-// const userUnblocked = async (req, res) => {
-//   try {
-//     let id = req.query.id;
-//     await User.updateOne({ _id: id }, { $set: { isBlocked: false } });
-//     return res.json({ response: "user unblocked successfully" });
-//   } catch (error) {
-//     console.log("error at unblocking user", error);
-//     res.status(500).json({ response: "an error try again" });
-//   }
-// };
+const userUnblocked = async (req, res) => {
+  try {
+    let id = req.query.id;
+    await User.updateOne({ _id: id }, { $set: { isBlocked: false } });
+    return res.json({ response: "user unblocked successfully" });
+  } catch (error) {
+    console.log("error at unblocking user", error);
+    res.status(500).json({ response: "an error try again" });
+  }
+};
 
 module.exports = {
-  userInfo,
-//   userUnblocked,
-//   userBlocked,
+userInfo,
+userUnblocked,
+userBlocked,
+
 };
