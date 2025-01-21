@@ -63,7 +63,14 @@
             <tr>
                 <td><%=productData[i].productName%></td>
                 <td><%=productData[i].brand.brandName%></td>
-                <td><%=productData[i].category.name%></td>
+                <td>
+                    <% if (productData[i].category && productData[i].category.name) { %>
+                      <%= productData[i].category.name %>
+                    <% } else { %>
+                      No Category Assigned
+                    <% } %>
+                  </td>
+                  
                 <td>
                 
                     <button class="btn btn-info" onclick="" style="width: 100px;">

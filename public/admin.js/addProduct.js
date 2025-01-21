@@ -2,81 +2,6 @@
 const publishButton = document.getElementById("publishBtn");
 publishButton.addEventListener("click", validateAndSubmit);
 
-// function validateAndSubmit(event) {
-//   event.preventDefault();
-
-//   if (validateForm()) {
-//     // Collect combo data from the form
-//     let combos = [];
-//     const comboRows = document.querySelectorAll(".combo-row");
-
-//     comboRows.forEach((row) => {
-//       const Size = row.querySelector('input[name="Size"]').value;
-//       const Colour = row.querySelector('input[name="Colour"]').value;
-//       const quantity = row.querySelector('input[name="quantity"]').value;
-//       const regularPrice = row.querySelector(
-//         'input[name="regularPrice"]'
-//       ).value;
-//       const salePrice = row.querySelector('input[name="salePrice"]').value;
-      
-
-//       combos.push({
-//         Size: Size,
-//         Colour: Colour,
-//         quantity: quantity,
-//         regularPrice: regularPrice,
-//         salePrice: salePrice,
-      
-//       });
-//     });
-
-//     const combosField = document.createElement("input");
-//     combosField.type = "hidden";
-//     combosField.name = "combos";
-//     combosField.value = JSON.stringify(combos); // Convert the combos array to a json string
-//     document.forms[0].appendChild(combosField);
-
-//     // Submit the form using AJAX
-//     const formData = new FormData(document.forms[0]);
-//     fetch(document.forms[0].action, {
-//       method: "POST",
-//       body: formData,
-//     })
-//       .then((response) => response.json())
-//       .then((data) => {
-//         console.log(data);
-//         if (data.message) {
-//           Swal.fire({
-//             icon: "success",
-//             title: "Added Successfully",
-//             text: data.message,
-//             timer: 1000,
-//             showConfirmButton: false,
-//           }).then(() => {
-//             window.location.href = "/admin/addProducts";
-//           });
-//         } else {
-//           Swal.fire({
-//             icon: "error",
-//             title: "Error",
-//             text: data.error || "An error occurred while adding the product.",
-//             timer: 1000,
-//             showConfirmButton: false,
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         console.error(error); // Log the error for debugging
-//         Swal.fire({
-//           icon: "error",
-//           title: "Error",
-//           text: "An error occurred while adding the product.",
-//           timer: 1000,
-//           showConfirmButton: false,
-//         });
-//       });
-//   }
-// }
 
 
 function validateAndSubmit(event) {
@@ -166,21 +91,31 @@ function viewImage(event, index) {
     const image = document.getElementById("imgView" + index);
     image.src = dataURL;
 
+   
     const cropper = new Cropper(image, {
-      aspectRatio: 1,
-      viewMode: 1,
+      aspectRatio: NaN,
+      viewMode: 2, 
       guides: true,
       background: false,
-      autoCropArea: 1,
+      autoCropArea: 1, 
       zoomable: true,
       ready() {
-        // Set the crop box dimensions here
+        const containerData = this.cropper.getContainerData();
+        
+       
         this.cropper.setCropBoxData({
-          width: this.cropper.getContainerData().width * 0.7, // Example: 70% of container width
-          height: this.cropper.getContainerData().height * 0.5, // Example: 50% of container height
+          left: 0, 
+          top: 0,  
+          width: containerData.width,  
+          height: containerData.height, 
         });
       },
     });
+    
+
+
+
+
     const cropperContainer = document.querySelector(
       "#croppedImg" + index
     ).parentNode;
@@ -351,12 +286,12 @@ addComboBtn.addEventListener("click", () => {
   newRow.innerHTML = `
         <div class="col-lg-3">
             <label class="form-label">Size</label>
-            <input name="ram" type="text" class="form-control border" required>
+            <input name="Size" type="text" class="form-control border" required>
             <div id="comboRAM-error-${comboIndex}" class="error-message"></div>
         </div>
         <div class="col-lg-3">
             <label class="form-label">Colour</label>
-            <input name="storage" type="text" class="form-control border" required>
+            <input name="Colour" type="text" class="form-control border" required>
             <div id="comboStorage-error-${comboIndex}" class="error-message"></div>
         </div>
         <div class="col-lg-3">

@@ -46,32 +46,15 @@ const loadlogin = async (req, res) => {
   };
 
 
-  //function to load dashboard
-// const loaddashboard = async (req, res) => {
-//     try {
-//       if(req.session.admin){
-//       const totalUsers = await User.findOne({}).countDocuments();
-//       res.render("admindash", {
-//         totalProducts: 0,
-//         users: 0,
-//       });
-//     }else{
-//       res.redirect("/admin/login")
-//     }}
-//     catch (error) {
-//       console.log(error);
-//       res.redirect("/page-not-found");
-//     }
-//   }
 
 const loaddashboard = async (req, res) => {
   try {
-    // Check if admin is logged in
+    // check  admin is logged in
     if (req.session.admin) {
-      // Fetch total users (countDocuments is more efficient for counting)
+      // fetch total users 
       const totalUsers = await User.findOne({}).countDocuments();
       
-      // Fetch total products (replace with your Product model logic if needed)
+      // Fetch total products 
       const totalProducts = await Product.countDocuments();
 
       // Render the admin dashboard with actual data

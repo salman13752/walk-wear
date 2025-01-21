@@ -43,7 +43,7 @@ userRoute.get(
 
 //for product management
 userRoute.get("/productDetails/:productId", productController.productDetails);
-// userRoute.get("/productDetails/combo/:id", productController.loadComboDetails);
+userRoute.get("/productDetails/combo/:id", productController.loadComboDetails);
 
 
 

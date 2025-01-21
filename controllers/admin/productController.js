@@ -82,6 +82,7 @@ const addProducts = async (req, res) => {
   }
 };
 
+
 //for all products listing
 const getAllProducts = async (req, res) => {
   try {
@@ -122,7 +123,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-//for soft deleting products
+//for deleting products
 const deleteProducts = async (req, res) => {
   try {
     const id = req.query.id;
@@ -194,12 +195,12 @@ const editProduct = async (req, res) => {
       }
     }
 
-    // Ensure combos are parsed as an array of objects
+    
     let combosArray = [];
     if (typeof data.combos === "string") {
       combosArray = JSON.parse(data.combos); // Convert the string to an array of objects
     } else if (Array.isArray(data.combos)) {
-      combosArray = data.combos; // If it's already an array, no need to parse
+      combosArray = data.combos; 
     }
 
     const brand = await Brand.findOne({ brandName: data.brand });

@@ -10,22 +10,22 @@ function validateAndSubmit(event) {
     const comboRows = document.querySelectorAll(".combo-row");
 
     comboRows.forEach((row) => {
-      const ram = row.querySelector('input[name="ram"]').value;
-      const storage = row.querySelector('input[name="storage"]').value;
+      const Size = row.querySelector('input[name="Size"]').value;
+      const Colour = row.querySelector('input[name="Colour"]').value;
       const quantity = row.querySelector('input[name="quantity"]').value;
       const regularPrice = row.querySelector(
         'input[name="regularPrice"]'
       ).value;
       const salePrice = row.querySelector('input[name="salePrice"]').value;
-      const color = row.querySelector('input[name="color"]').value;
+      
 
       combos.push({
-        ram: ram,
-        storage: storage,
+        Size: Size,
+        Colour: Colour,
         quantity: quantity,
         regularPrice: regularPrice,
         salePrice: salePrice,
-        color: color,
+        
       });
     });
 
@@ -178,8 +178,8 @@ function validateForm() {
   // Validate Combos
   const combos = document.querySelectorAll(".combo-row");
   combos.forEach((combo) => {
-    const ram = combo.querySelector('input[name="ram"]').value.trim();
-    const storage = combo.querySelector('input[name="storage"]').value.trim();
+    const Size = combo.querySelector('input[name="Size"]').value.trim();
+    const Colour = combo.querySelector('input[name="Colour"]').value.trim();
     const quantity = combo.querySelector('input[name="quantity"]').value.trim();
     const regularPrice = combo
       .querySelector('input[name="regularPrice"]')
@@ -187,15 +187,15 @@ function validateForm() {
     const salePrice = combo
       .querySelector('input[name="salePrice"]')
       .value.trim();
-    const color = combo.querySelector('input[name="color"]').value.trim();
+  
 
     // Check if any field is empty
-    if (ram === "") {
+    if (Size === "") {
       displayErrorMessage("comboRAM-error", "This is Empty");
       isValid = false;
     }
 
-    if (storage === "") {
+    if (Colour === "") {
       displayErrorMessage("comboStorage-error", "This is Empty");
       isValid = false;
     }
@@ -215,13 +215,10 @@ function validateForm() {
       isValid = false;
     }
 
-    if (color === "") {
-      displayErrorMessage("comboColor-error", "This is Empty");
-      isValid = false;
-    }
+    
 
     // Check for duplicate combos
-    const comboKey = `${ram}-${storage}-${regularPrice}-${salePrice}-${color}`;
+    const comboKey = `${Size}-${Colour}-${regularPrice}-${salePrice}`;
     if (comboSet.has(comboKey)) {
       displayErrorMessage("combo-error", "Duplicate combo detected.");
       isValid = false;
@@ -244,13 +241,13 @@ addComboBtn.addEventListener("click", () => {
 
   newRow.innerHTML = `
         <div class="col-lg-3">
-            <label class="form-label">RAM</label>
-            <input name="ram" type="text" class="form-control border" required>
+            <label class="form-label">Size</label>
+            <input name="Size" type="text" class="form-control border" required>
             <div id="comboRAM-error" class="error-message"></div>
         </div>
         <div class="col-lg-3">
-            <label class="form-label">Storage</label>
-            <input name="storage" type="text" class="form-control border" required>
+            <label class="form-label">Colour</label>
+            <input name="Colour" type="text" class="form-control border" required>
             <div id="comboStorage-error" class="error-message"></div>
         </div>
         <div class="col-lg-3">

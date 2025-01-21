@@ -1,6 +1,6 @@
 
-const nodemailer = require('nodemailer'); // For sending emails
-require('dotenv').config(); // To load environment variables
+const nodemailer = require('nodemailer'); // for sending emails
+require('dotenv').config(); // to load environment variables
 const bcrypt = require('bcrypt'); // For hashing passwords
 const User = require('../../models/userSchema'); // User model for MongoDB
 const session = require('express-session'); // For managing user sessions
@@ -13,7 +13,7 @@ const Category = require('../../models/categorySchema'); // Category model for M
 // Page Not Found Handler
 const pageNotFound = async (req, res) => {
     try {
-        res.render('page-404'); // Render the "Page Not Found" view
+        res.render('page-404'); 
     } catch (error) {
         res.redirect('/pageNotFound'); // Redirect to the same page in case of an error
     }
@@ -34,9 +34,10 @@ const loadHomepage = async (req, res) => {
          const formattedProducts = ProductData.map(product => ({
           productName: product.productName,
           description: product.description,
+          _id:product._id,
           combos: product.combos.map(combo => ({
-              ram: combo.ram,
-              storage: combo.storage,
+              Size: combo.Size,
+              Colour: combo.Colour,
               salePrice: combo.salePrice
           })),
           productImage: product.productImage
