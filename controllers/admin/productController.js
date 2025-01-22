@@ -62,7 +62,7 @@ const addProducts = async (req, res) => {
       return res.status(400).send("Category not found");
     }
     const brandId = await Brand.findOne({ brandName: brand });
-    console.log("here", brandId);
+    
     // Create and save the new product
     const newProduct = new Product({
       productName,
@@ -99,12 +99,16 @@ const getAllProducts = async (req, res) => {
       .populate("category")
       .populate("brand");
 
+
     const count = await Product.find({
       productName: { $regex: new RegExp(".*" + search + ".*", "i") },
     }).countDocuments();
 
     const categories = await Category.find({ isListed: true });
     const brands = await Brand.find({ isBlocked: false });
+
+
+
 
     if (categories && brands) {
       res.render("products", {
@@ -152,13 +156,20 @@ const getEditProducts = async (req, res) => {
     const product = await Product.findById(id)
       .populate("brand")
       .populate("category");
-    const category = await Category.find({});
-    const brand = await Brand.find({});
+    const category = await Category.find();
+    const brand = await Brand.find();
+    
+
+    
+   
+
+
     res.render("editProducts", {
       product: product,
       cat: category,
-      brand: brand,
+      brand: brand,    
     });
+    
   } catch (error) {
     console.log("Error found in the loading Edit Product side: ", error);
     res.redirect("/page-not-found");
@@ -232,7 +243,7 @@ const deleteSingleImage = async (req, res) => {
   try {
     let { imagePublicId, productId } = req.body;
 
-    console.log("Original imagePublicId:", imagePublicId);
+    
     let imageId;
     // code to get public id from  url
     if (imagePublicId.startsWith("http")) {
@@ -241,11 +252,11 @@ const deleteSingleImage = async (req, res) => {
       imageId = fileName.split(".")[0];
     }
 
-    console.log("Extracted public_id:", imageId);
+  
 
     // deletind the image from Cloudinary
     const result = await cloudinary.uploader.destroy(imageId);
-    console.log("result", result);
+ 
     if (result.result !== "ok") {
       console.error("Error deleting image from Cloudinary:", result);
       return res.status(500).send({
@@ -262,7 +273,7 @@ const deleteSingleImage = async (req, res) => {
       { $pull: { productImage: imagePublicId } },
       { new: true }
     );
-    console.log("product", product);
+    
     if (!product) {
       return res
         .status(404)

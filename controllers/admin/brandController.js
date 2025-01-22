@@ -10,8 +10,7 @@ const getBrandPage = async (req, res) => {
     const brandData = await brand
       .find({})
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+      
 
     const totalBrands = await brand.countDocuments();
     const totalPages = Math.ceil(totalBrands / limit);
@@ -31,24 +30,32 @@ const getBrandPage = async (req, res) => {
 //for adding brands
 const addBrand = async (req, res) => {
   try {
-    const name = req.body.name;
-    console.log(req.body);
-    const findBrand = await brand.findOne({ name });
-    console.log(req.files);
-    if (!findBrand) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        quality: "100",
-      });
-      const newBrand = new brand({
-        brandName: name,
-        brandImage: result.url,
-      });
+    const 
+    brandName = req.body.name;
 
-      await newBrand.save();
+    // Check if the brand already exists
+    const findBrand = await brand.findOne({ brandName });
+    if (findBrand) {
+      console.log("Brand already exists");
+      return res.redirect("/admin/brands"); // Stop further execution
     }
+
+    // Upload image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      quality: "100",
+    });
+
+    // Create and save new brand
+    const newBrand = new brand({
+      brandName: brandName,
+      brandImage: result.url,
+    });
+    await newBrand.save();
+
+    // Redirect after successful save
     res.redirect("/admin/brands");
   } catch (error) {
-    console.log("error occured while adding brand", error);
+    console.log("Error occurred while adding brand", error);
     res.redirect("/page-not-found");
   }
 };
@@ -62,8 +69,23 @@ const blockBrand = async (req, res) => {
   } catch (error) {}
 };
 
+
+
+const deleteBrand = async (req, res) => {
+  try {
+    const brandId = req.params.id;
+    await brand.findByIdAndDelete(brandId);
+    res.redirect("/admin/brands");
+  } catch (error) {
+    console.error("Error deleting brand:", error);
+    res.status(500).send("Error deleting brand");
+  }
+};
+
+
 module.exports = {
   getBrandPage,
   addBrand,
   blockBrand,
+  deleteBrand
 };

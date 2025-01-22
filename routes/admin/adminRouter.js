@@ -55,5 +55,6 @@ router.post(
 router.get("/brands", brandController.getBrandPage);
 router.post("/addbrands", uploads.single("image"), brandController.addBrand);
 router.get("/blockBrand", brandController.blockBrand);
+router.post("/deleteBrand/:id",brandController.deleteBrand);
 
 module.exports = router;

@@ -191,12 +191,12 @@ function validateForm() {
 
     // Check if any field is empty
     if (Size === "") {
-      displayErrorMessage("comboRAM-error", "This is Empty");
+      displayErrorMessage("comboSize-error", "This is Empty");
       isValid = false;
     }
 
     if (Colour === "") {
-      displayErrorMessage("comboStorage-error", "This is Empty");
+      displayErrorMessage("comboColour-error", "This is Empty");
       isValid = false;
     }
 
@@ -243,12 +243,12 @@ addComboBtn.addEventListener("click", () => {
         <div class="col-lg-3">
             <label class="form-label">Size</label>
             <input name="Size" type="text" class="form-control border" required>
-            <div id="comboRAM-error" class="error-message"></div>
+            <div id="comboSize-error" class="error-message"></div>
         </div>
         <div class="col-lg-3">
             <label class="form-label">Colour</label>
             <input name="Colour" type="text" class="form-control border" required>
-            <div id="comboStorage-error" class="error-message"></div>
+            <div id="comboColour-error" class="error-message"></div>
         </div>
         <div class="col-lg-3">
             <label class="form-label">Quantity</label>
@@ -264,11 +264,6 @@ addComboBtn.addEventListener("click", () => {
             <label class="form-label">Sale Price</label>
             <input name="salePrice" type="number" class="form-control border" required>
             <div id="comboSale-error" class="error-message"></div>
-        </div>
-        <div class="col-lg-3">
-            <label class="form-label">Color</label>
-            <input name="color" type="text" class="form-control border" placeholder="e.g., Red, Blue, Green" required>
-            <div id="comboColor-error" class="error-message"></div>+
         </div>
         <div class="col-lg-3 d-flex align-items-center">
             <button type="button" class="btn btn-danger delete-combo-btn">Delete</button>
