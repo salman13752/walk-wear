@@ -69,12 +69,27 @@
                       class="btn btn-warning btn-sm"
                       >Edit</a
                     >
-                    <button
-                      onclick="deleteCategory('<%= category._id %>')"
-                      class="btn btn-danger btn-sm"
-                    >
-                      Delete
-                    </button>
+                    
+                      <div>
+                        <% if (category.isListed===true) { %>
+                        <button
+                          onclick="blockUser('<%= category._id %>')"
+                          class="btn btn-warning btn-sm"
+                          style="width: 80px"
+                        >
+                          Block
+                        </button>
+                        <% } else { %>
+                        <button
+                          onclick="unblockUser( '<%= category._id %>')"
+                          class="btn btn-success btn-sm"
+                          style="width: 80px"
+                        >
+                          Unblock
+                        </button>
+                        <% } %>
+                      </div>
+                    
                   </div>
                
               </tr>

@@ -2,7 +2,7 @@ const express = require('express');
 const adminController = require('../../controllers/admin/adminController');
 const customerController = require('../../controllers/admin/customerController');
 const router = express.Router();
-const {adminAuth} = require('../../middlewares/auth')
+const adminAuth = require('../../middlewares/adminAuth');
 const catController = require('../../controllers/admin/categoryController');
 const productController = require('../../controllers/admin/productController');
 const brandController = require("../../controllers/admin/brandController");
@@ -21,6 +21,7 @@ router.post("/login",adminController.loginverification);
 router.get("/",adminController.loaddashboard);
 router.get("/logout",adminController.logout);
 
+
 // for customer management
 router.get("/users",adminAuth,customerController.userInfo);
 // for blocking and unblocking customers
@@ -29,20 +30,21 @@ router.get("/unblock-user", customerController.userUnblocked);
 
 
 // for category management
-router.get("/category",catController.categoryInfo);
+router.get("/category",adminAuth,catController.categoryInfo);
 router.post("/addCategory",catController.addCategory);
 router.get("/deleteCategory",catController.deleteCategory);
 router.get("/editCategory", catController.geteditCategory);
 router.post("/editCategory/:id", catController.editCategory);
+router.get("/blockCategory",catController.catBlocked);
+router.get("/unblockCategory",catController.catUnblocked);
 
-
-router.get("/addProducts", productController.getProductInfo);
+router.get("/addProducts",adminAuth,productController.getProductInfo);
 router.post(
   "/addProducts",
   uploads.array("images", 4),
   productController.addProducts
 );
-router.get("/products",productController.getAllProducts);
+router.get("/products",adminAuth,productController.getAllProducts);
 router.put("/products/deleteProduct", productController.deleteProducts);
 router.get("/editProduct", productController.getEditProducts);
 router.post(
@@ -52,7 +54,7 @@ router.post(
 );
 
 //for brands section
-router.get("/brands", brandController.getBrandPage);
+router.get("/brands",adminAuth,brandController.getBrandPage);
 router.post("/addbrands", uploads.single("image"), brandController.addBrand);
 router.get("/blockBrand", brandController.blockBrand);
 router.post("/deleteBrand/:id",brandController.deleteBrand);

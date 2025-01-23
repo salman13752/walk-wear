@@ -13,12 +13,10 @@ const getBrandPage = async (req, res) => {
       
 
     const totalBrands = await brand.countDocuments();
-    const totalPages = Math.ceil(totalBrands / limit);
+
 
     res.render("brandPage", {
       brands: brandData,
-      currentPage: page,
-      totalPages: totalPages,
       totalBrands: totalBrands,
     });
   } catch (error) {
@@ -27,17 +25,20 @@ const getBrandPage = async (req, res) => {
   }
 };
 
-//for adding brands
+
 const addBrand = async (req, res) => {
   try {
-    const 
-    brandName = req.body.name;
+    const brandName = req.body.name.toLowerCase().trim();
+    const brands = await brand.find();
 
     // Check if the brand already exists
-    const findBrand = await brand.findOne({ brandName });
+    const findBrand = await brand.findOne({ brandName: new RegExp(`^${brandName}$`, "i") });
     if (findBrand) {
       console.log("Brand already exists");
-      return res.redirect("/admin/brands"); // Stop further execution
+      return res.render("brandPage", {
+        brands,
+        errorMessage: "Brand already exists",
+      });
     }
 
     // Upload image to Cloudinary
@@ -47,8 +48,8 @@ const addBrand = async (req, res) => {
 
     // Create and save new brand
     const newBrand = new brand({
-      brandName: brandName,
-      brandImage: result.url,
+      brandName: brandName, // Store in lowercase
+      brandImage: result.secure_url,
     });
     await newBrand.save();
 
@@ -60,7 +61,11 @@ const addBrand = async (req, res) => {
   }
 };
 
-//for doing soft delete
+
+
+
+
+//for doing  delete
 const blockBrand = async (req, res) => {
   try {
     const id = req.query.id;

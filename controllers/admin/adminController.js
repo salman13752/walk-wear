@@ -7,51 +7,49 @@ const Product = require("../../models/productSchema");
 
 
 
-
 const loadlogin = async (req, res) => {
-    if (req.session.admin) {
-      res.redirect("/admin");
-    } else {
-      
-      res.render("adminLoginPage");
-    }
-  };
+  if (req.session.admin) {
+    res.redirect("/admin");
+  } else {
+    
+    res.render("adminLoginPage");
+  }
+};
 
   
-  const loginverification = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const admin = await User.findOne({ email, isAdmin: true });
-      if (admin) {
-        const passwordMatch = await bcrypt.compare(password, admin.password);
-        if (passwordMatch) {
-          req.session.admin = admin; 
-          console.log(req.session.admin);
-           
-          return res.redirect("/admin");
-        } else {
-          return res.render("adminLoginPage", {
-            message: "Invalid Username or Password",
-          });
-        }
+const loginverification = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const admin = await User.findOne({ email, isAdmin: true });
+    if (admin) {
+      const passwordMatch = await bcrypt.compare(password, admin.password);
+      if (passwordMatch) {
+        req.session.admin = admin; 
+        console.log(req.session.admin);
+         
+        return res.redirect("/admin");
       } else {
         return res.render("adminLoginPage", {
           message: "Invalid Username or Password",
         });
       }
-    } catch (error) {
-      console.log(error);
-      res.redirect("/page-not-found");
+    } else {
+      return res.render("adminLoginPage", {
+        message: "Invalid Username or Password",
+      });
     }
-  };
+  } catch (error) {
+    console.log(error);
+    res.redirect("/page-not-found");
+  }
+};
 
 
 
 const loaddashboard = async (req, res) => {
   try {
-    // check  admin is logged in
+    
     if (req.session.admin) {
-      // fetch total users 
       const totalUsers = await User.findOne({}).countDocuments();
       
       // Fetch total products 

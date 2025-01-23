@@ -18,21 +18,27 @@ const userAuth = (req,res,next)=>{
 }
 
 
-    const adminAuth = (req,res,next)=>{ 
+const adminAuth = async (req, res, next) => {
+    try {
+        // Check if admin session exists
+        if (!req.session.admin) {
+            return res.redirect("/admin/login");
+        }
 
-        User.findOne({isAdmin:true})
-        .then(data=>{
-            if(data){
-                next()
-            }else{
-                res.redirect("/admin/login")
-            }
-        })
-        .catch(err=>{
-            console.log('Error in admin auth')
-            res.redirect("/admin/login")
-        })
+        // Find admin user in the database
+        const adminUser = await User.findOne({ isAdmin: true });
+       
+        if (adminUser) {
+            next(); // Allow the request to proceed
+        } else {
+            res.redirect("/admin/login"); // Redirect if no admin is found
+        }
+    } catch (err) {
+        console.error('Error in admin auth:', err);
+        res.redirect("/admin/login"); // Redirect in case of error
     }
+};
+
 
 
   
