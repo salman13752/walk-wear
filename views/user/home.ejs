@@ -182,19 +182,24 @@
                                     <h5 class="product-price mb-2">₹<%= product[i].combos[j].salePrice %></h5>
                                     <p class="product-size-color mb-1">Size: <%= product[i].combos[j].Size %></p>
                                     <p class="product-size-color mb-3">Colour: <%= product[i].combos[j].Colour %></p>
+
                                     <% break; %>
                                 <% } %>
                             <% } else { %>
                                 <h5 class="product-price mb-2">₹ Not Available</h5>
                             <% } %>
-        
-                            <a href="/addToCart?id=<%= product[i]._id %>" class="btn btn-primary btn-sm w-100">Add to Cart</a>
+    
+                            
+                            <button class="btn btn-primary btn-sm w-100" onclick="addToCart('<%=product[i]._id%>','<%=product[i].combos[0]._id%>')" >Add to Cart</button>
+                            
                         </div>
                     </div>
                 </div>
             <% } %>
+            
         </div>
     </div>
 </section>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../user.js/main.js"></script>
 <%-include("../../views/partials/user/footer")%>

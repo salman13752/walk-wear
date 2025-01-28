@@ -1,0 +1,166 @@
+
+<%-include("../../views/partials/user/header")%>
+  
+
+<link
+rel="stylesheet"
+href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
+/>
+
+<!--=============== SWIPER CSS ===============-->
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<!--=============== CSS ===============-->
+<link rel="stylesheet" href="../../css/user/home.css" />
+<link rel="stylesheet" href="../../css/user/cart.css">
+<header class="header">
+  
+  </header>
+<!--=============== MAIN ===============-->
+<main class="main">
+ <!--=============== BREADCRUMB ===============-->
+ <section class="breadcrumb">
+   <ul class="breadcrumb__list flex container">
+     <li><a href="index.html" class="breadcrumb__link">Home</a></li>
+     <li><span class="breadcrumb__link"></span>></li>
+     <li><span class="breadcrumb__link">Shop</span></li>
+     <li><span class="breadcrumb__link"></span>></li>
+     <li><span class="breadcrumb__link">Cart</span></li>
+   </ul>
+ </section>
+
+ <!--=============== CART ===============-->
+ <% if (cart && cart.items && cart.items.length > 0) { %>
+ <section class="cart section--lg container">
+   <div class="cart__container">
+     <!-- Cart Items -->
+     <div class="cart__items">
+
+        
+          <% cart.items.forEach(item => { %>
+            <!-- Cart Item -->
+            <div class="cart__item">
+              <div class="cart__item-img-container">
+                <img
+                  src="<%= item.productId.productImage[0] %>"
+                  alt="Product Image"
+                  class="cart__item-img"
+                />
+                <span class="cart__item-stock-desktop">In Stock</span>
+              </div>
+              <div class="cart__item-details">
+                <h3 class="cart__item-title">
+                  <%= item.productId.productName || "Unknown Product" %>
+                </h3>
+                <% if(item.combo.quantity <= 0) {%>
+                <span class="text-danger h5">Item is out of stock</span>
+                <% } %>
+                <div class="cart__item-meta">
+                  <span class="cart__item-stock-mobile">In Stock</span>
+                  <div class="cart__item-specs">
+                   
+                    <span class="cart__item-color">Color: <%= item.combo.Colour[0] %></span>
+                  </div>
+                </div>
+                <div class="cart__item-prices">
+                  <p class="cart__item-price">&#8377;<%= item.totalPrice %></p>
+                </div>
+              </div>
+              <div class="cart__item-controls">
+                <div class="cart__quantity">
+                  <% if(item.quantity > 1) {%>
+                  <button onclick="decreaseQuantity( '<%=item.combo._id%>' )" class="cart__quantity-btn minus">
+                    <i class="fi fi-rs-minus-small"></i>
+                  </button>
+                  <% }else{ %>
+                    <button  onclick="decreaseQuantity( '<%=item.combo._id%>' )" class="cart__quantity-btn minus" disabled>
+                      <i class="fi fi-rs-minus-small"></i>
+                    </button>
+                    <% } %>
+                  <input type="number" value="<%= item.quantity %>" min="1" class="cart__quantity-input" />
+
+                  <% if(item.quantity <5 && item.quantity < item.combo.quantity) {%>
+                  <button onclick="updateQuantity( '<%=item.combo._id%>' )" class="cart__quantity-btn plus" >
+                    <i class="fi fi-rs-plus-small"></i>
+                  </button>
+                  <% }else{ %>
+                    <button onclick="updateQuantity( '<%=item.combo._id%>' )" class="cart__quantity-btn plus" disabled>
+                      <i class="fi fi-rs-plus-small"></i>
+                    </button>
+                   <% } %>
+                </div>
+                <button 
+                onclick="deleteCartItem('<%=cart._id%>','<%=item._id%>')"
+                class="cart__item-remove">
+                  <i class="fi fi-rs-trash"></i>
+                </button>
+              </div>
+            </div>
+          <% }) %>
+       
+    
+     </div>
+
+        
+    
+       
+     <!-- Cart Summary -->
+     <div class="cart__summary">
+       <!-- Cart Total -->
+       <div class="cart__total">
+         <h3 class="section__title">Cart Total</h3>
+         <table class="cart__total-table">
+           <tr>
+             <td class="cart__total-title">Subtotal:</td>
+             <td class="cart__total-price">&#8377; <%= cart.totalPrice %></td>
+           </tr>
+           <!-- <tr>
+             <td class="cart__total-title">Shipping:</td>
+             <td class="cart__total-price">$10.00</td>
+           </tr> -->
+           <tr>
+             <td class="cart__total-title">Total:</td>
+             <td class="cart__total-price">&#8377; <%= cart.totalPrice %> </td>
+           </tr>
+         </table>
+       
+         <a href="/checkout" disabled="disabled" class="btn">Proceed to Checkout</a>
+       
+       </div>
+     </div>
+     <% } else { %>
+        <div class="cart__container">
+          <!-- Cart Items -->
+          <div class="cart__items ">
+            <p class="text-center" >Cart is empty</p>
+            <button class="btn " >Shop now</button>
+            </div>
+            </div>
+            
+        <% } %>
+ </section>
+
+</main>
+
+
+
+<%-include("../../views/partials/user/footer")%>
+  <!--=============== SWIPER JS ===============-->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Include jQuery before your script -->
+
+  <!--=============== MAIN JS ===============-->
+  <!-- Include jQuery before your script -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <script src="../../user.js/cart.js" ></script>
+<!--=============== MAIN JS ===============-->
+<script src="../../user.js/main.js"></script>
+</body>
+</body>
+</html>

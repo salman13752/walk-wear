@@ -41,19 +41,17 @@ const addBrand = async (req, res) => {
       });
     }
 
-    // Upload image to Cloudinary
+    // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       quality: "100",
     });
 
-    // Create and save new brand
+   
     const newBrand = new brand({
-      brandName: brandName, // Store in lowercase
+      brandName: brandName, 
       brandImage: result.secure_url,
     });
     await newBrand.save();
-
-    // Redirect after successful save
     res.redirect("/admin/brands");
   } catch (error) {
     console.log("Error occurred while adding brand", error);

@@ -15,11 +15,11 @@ const pageNotFound = async (req, res) => {
     try {
         res.render('page-404'); 
     } catch (error) {
-        res.redirect('/pageNotFound'); // Redirect to the same page in case of an error
+        res.redirect('/pageNotFound'); 
     }
 };
 
-// Load Home Page
+// load home Page
 const loadHomepage = async (req, res) => {
     try {
         const user = req.session.user;
@@ -27,24 +27,14 @@ const loadHomepage = async (req, res) => {
         const CategoryData = await Category.find({isListed:true})
         const ProductData = await Product.find({
             isBlocked: false,
-        })
-        
+        }).populate("brand")
          .sort({ createdAt: -1 })
          
-         const formattedProducts = ProductData.map(product => ({
-          productName: product.productName,
-          description: product.description,
-          _id:product._id,
-          combos: product.combos.map(combo => ({
-              Size: combo.Size,
-              Colour: combo.Colour,
-              salePrice: combo.salePrice
-          })),
-          productImage: product.productImage
-      }));
+
+       
         if(user){
           const userData = await User.findOne({_id:user})
-        res.render("home",{user:userData,product:formattedProducts})
+        res.render("home",{user:userData,product:ProductData})
         }else{
           return  res.render("home",{product:ProductData})
         }
@@ -155,6 +145,7 @@ const verifyOtp = async (req, res) => {
   
       console.log("otp", otp);
   
+      
       if (otp === req.session.userOtp) {
         const user = req.session.userData;
         const passwordHash = await securePassword(user.password);
@@ -270,8 +261,64 @@ const logout = async (req, res) => {
     }
   };
 
-  
 
+  // for user profile
+
+  const showUserProfile = async (req, res) => {
+    try {
+        // Fetch user details
+        const id = req.params.id; 
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Fetch orders for the user
+        // const orders = await Order.find({ userId: req.user.id });
+
+        res.render('user-profile', { user,orders:0}); // Pass both user and orders to the view
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error loading profile');
+    }
+};
+
+// Render the Edit Profile page
+const editProfile = async (req, res) => {
+  const id = req.params.id; 
+  const user = await User.findById(id);
+
+  if (!user) {
+      return res.status(404).send('User not found');
+  }
+
+  res.render('edit-profile', { user });
+};
+
+
+  
+const updateProfile = async (req, res) => {
+  const { name, email, address } = req.body;
+
+  try {
+    const id = req.params.id;
+      const updatedUser = await User.findByIdAndUpdate(
+          id,
+          { name, email, address },
+          { new: true }
+      );
+
+      if (!updatedUser) {
+          return res.status(404).send('User not found');
+      }
+
+      res.redirect('/'); // After updating, redirect to the profile page
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Error updating profile');
+  }
+};
 
 module.exports = {
     pageNotFound,
@@ -283,4 +330,7 @@ module.exports = {
     loadLogin,
     login,
     logout,
+    showUserProfile,
+    editProfile,
+    updateProfile
 };

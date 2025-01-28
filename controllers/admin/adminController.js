@@ -25,7 +25,7 @@ const loginverification = async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, admin.password);
       if (passwordMatch) {
         req.session.admin = admin; 
-        console.log(req.session.admin);
+        
          
         return res.redirect("/admin");
       } else {
@@ -52,21 +52,18 @@ const loaddashboard = async (req, res) => {
     if (req.session.admin) {
       const totalUsers = await User.findOne({}).countDocuments();
       
-      // Fetch total products 
+      // fetch total products 
       const totalProducts = await Product.countDocuments();
 
-      // Render the admin dashboard with actual data
       return res.render("admindash", {
         totalProducts,
         totalUsers,
       });
     } else {
-      // Redirect to admin login if not logged in
       return res.redirect("/admin/login");
     }
   } catch (error) {
     console.error("Error loading admin dashboard:", error);
-    // Redirect to a custom error page
     return res.redirect("/page-not-found");
   }
 };

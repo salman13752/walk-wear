@@ -3,8 +3,8 @@ const userRoute = express.Router();
 const userController = require("../../controllers/user/userController");
 const passport = require("passport");
 const productController = require("../../controllers/user/productController");
-
-
+const cartController = require("../../controllers/user/cartController");
+const orderController = require("../../controllers/user/orderController")
 //page not found route
 userRoute.get("/page-not-found", userController. pageNotFound);
 
@@ -46,7 +46,23 @@ userRoute.get("/productDetails/:productId", productController.productDetails);
 userRoute.get("/productDetails/combo/:id", productController.loadComboDetails);
 
 
+// for user profile
+userRoute.get('/profile/:id',userController.showUserProfile);
+userRoute.get('/profile/edit/:id', userController.editProfile);
+userRoute.post("/userUpdate/:id", userController.updateProfile);
 
+
+//for cart details
+userRoute.get("/cart", cartController.getCart);
+userRoute.post("/addCart/:productId/combo/:comboId", cartController.addToCart);
+userRoute.delete("/cart/:cartId/item/:itemId", cartController.deleteCartItem);
+userRoute.patch("/updateCart", cartController.addquantity);
+userRoute.patch("/decreaseQuantity", cartController.decreaseQuantity);
+
+// for checkout
+userRoute.get("/checkout",orderController.processCheckout)
+userRoute.post("/checkout", orderController.placeOrder);
+// userRoute.get("/orderplaced", userAuth.userCheck, orderController.orderPlaced);
 
   
 module.exports = userRoute;

@@ -1,0 +1,166 @@
+<%-include("../../views/partials/user/header")%>
+
+<link
+rel="stylesheet"
+href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
+/>
+
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+
+<link rel="stylesheet" href="../../css/user/home.css" />
+<link rel="stylesheet" href="../../css/user/chheckOut.css">
+
+<main class="main">
+  
+  <section class="breadcrumb">
+    <ul class="breadcrumb__list flex container">
+      <li><a href="index.html" class="breadcrumb__link">Home</a></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Shop</span></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Checkout</span></li>
+    </ul>
+  </section>
+  <!--=============== CHECKOUT ===============-->
+  <section class="checkout section--lg">
+    <div class="checkout__container container">
+      <h1 class="section__titlee">Checkout</h1>
+      
+      <form action="/ckeckOut" method="POST">
+        
+        <div class="checkout__content">
+          <!-- Left Side - Cart Details -->
+          <div class="checkout__cart">
+            <h3 class="section__title">Cart Items</h3>
+            <div class="cart__items">
+              <% if (cart.items.length > 0) { %>
+                <% cart.items.forEach((item) => { %>
+                  <div class="cart__item">
+                    <div class="item__image">
+                      <img src="<%= item.productId.productImage[0] %>" alt="<%= item.productId.productName %>">
+                    </div>
+                    <div class="item__content">
+                      <div class="item__details">
+                        <h4 class="item__name"><%= item.productId.productName %></h4>
+                        <div class="item__meta">
+                          <span class="item__color"><%= item.productId.combos[0].color %></span>
+                          <span class="item__divider">•</span>
+                          <span class="item__qty">Qty: <%= item.quantity %></span>
+                        </div>
+                      </div>
+                      <div class="item__price">₹<%= item.totalPrice %></div>
+                    </div>
+                
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="empty__cart">
+                  <i class="fi fi-rs-shopping-cart"></i>
+                  <p>Your cart is empty</p>
+                  <a href="/shop" class="btn-shop">Continue Shopping</a>
+                </div>
+              <% } %>
+            </div>
+
+            <div class="checkout__billing">
+              <div class="billing__header">
+                <div class="location__icon">
+                  <i class="fi fi-rs-marker"></i>
+                </div>
+                <h3 class="section__title">Delivery Address</h3>
+              </div>
+              <% if (address && address.length > 0) { %>
+                <% address.forEach((address, index) => { %>
+                  <div class="saved__address">
+                    <div class="address__info">
+                      <div class="address__header">
+                        <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= index === 0 ? "checked" : "" %>>
+                        <h4 class="customer__name"><%= user.name %></h4>
+                        <span class="address__type"><%= address.addressType %></span>
+                      </div>
+                      <p class="address__details">
+                        <%= address.name %>, <%= address.landMark %>,
+                        <%= address.city %>, <%= address.state %> - <%= address.pincode %>
+                      </p>
+                      <p class="contact__number"><%= address.phone %></p>
+                    </div>
+                    <button type="button" class="change__address" onclick="toggleAddressModal()">CHANGE</button>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <p>No saved addresses found. Please add a new address.</p>
+              <% } %>
+            </div>
+
+          </div>
+
+          <!-- Right Side - Checkout Details -->
+          <div class="checkout__sidebar">
+       
+          
+          <div class="checkout__coupon">
+              <h3 class="section__title">Have a coupon?</h3>
+              <div class="coupon__form">
+                <input type="text" placeholder="Enter your coupon code" class="coupon__input">
+                <button class="coupon__button">Apply Coupon</button>
+              </div>
+            </div>
+
+            <!-- Price Details -->
+            <div class="price__details">
+              <h4 class="details__title">Price Details</h4>
+              <div class="price__row">
+                <span>Price</span>
+                <span>₹<%= totalPrice %></span>
+              </div>
+              <div class="price__row">
+                <span>Delivery Charges</span>
+                <span class="free">Free</span>
+              </div>
+              <div class="price__row total">
+                <span>Total Amount</span>
+                <span>₹ <%= totalPrice %></span>
+              </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="checkout__payment">
+              <h3 class="section__title">Payment Methods</h3>
+              <div class="payment__methods">
+                <div class="payment__option">
+                  <input type="radio" name="payment" id="Cash on Delivery" checked>
+                  <label for="bank"> Cash on Delivery</label>
+                </div>
+                <button class="coupon__button place-order-btn" style="width: 100%; margin-top: 1rem;">Place Order</button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+    </div>
+  </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!--=============== SWIPER JS ===============-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Include jQuery before your script -->
+  
+    <!--=============== MAIN JS ===============-->
+    <!-- Include jQuery before your script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="/scripts/users/checkout.js" ></script>
+  <!--=============== MAIN JS ===============-->
+  <script src="/scripts/users/main.js"></script>
+  </body>
+  <%-include("../../views/partials/user/footer")%>

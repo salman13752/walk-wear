@@ -279,8 +279,6 @@ const deleteSingleImage = async (req, res) => {
         .status(404)
         .send({ status: false, message: "Product not found" });
     }
-
-    // Step 3: Respond with success
     res.send({ status: true, message: "Image deleted successfully" });
   } catch (error) {
     console.error("Error in deleteSingleImage:", error.message);
