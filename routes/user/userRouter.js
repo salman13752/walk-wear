@@ -66,9 +66,10 @@ userRoute.post("/checkout", orderController.placeOrder);
 // userRoute.get("/orderplaced", userAuth.userCheck, orderController.orderPlaced);
 
 
-
 //for shopping page
-
 userRoute.get("/shop",shopController.loadshop)
+
+// for filtering 
+userRoute.get("/filter",shopController.filterProduct)
   
 module.exports = userRoute;

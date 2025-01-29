@@ -150,7 +150,7 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     <%for (let i = 0; i<category.length; i++){ %>
-                                                    <li><a href=""><%= category[i].name %></a></li>
+                                                    <li><a href="/filter?category=<%=category[i]._id%>"><%= category[i].name %></a></li>
                                                   <%}%>
                                                 </ul>
                                             </div>
@@ -166,7 +166,7 @@
                                             <div class="shop__sidebar__brand">
                                                 <ul>
                                                     <%for (let i = 0; i<brand.length; i++){%>
-                                                    <li><a href="#"><%=brand[i].brandName%></a></li>
+                                                    <li><a href="/filter?brand=<%=brand[i]._id%>"><%=brand[i].brandName%></a></li>
                                                     <%}%>
                                                 </ul>
                                             </div>
