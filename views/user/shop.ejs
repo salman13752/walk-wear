@@ -1,0 +1,399 @@
+<%-include("../../views/partials/user/header")%>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+<style>
+    /* Product listing container */
+.product__filter {
+    display: flex;
+    flex-wrap: wrap;
+     /* Adds spacing between cards */
+}
+
+/* Product card */
+.product-cart-wrap {
+    border: 1px solid #ddd; /* Adds border */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Prevents content overflow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover effects */
+    background: #fff;
+}
+
+/* Hover effect */
+.product-cart-wrap:hover {
+    transform: translateY(-5px); /* Slight upward lift */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+/* Product image */
+.product-img img {
+    max-width: 100%;
+    height: 10rem;
+    display: block;
+    border-bottom: 1px solid #ddd; /* Border below the image */
+}
+
+/* Product content */
+.product-content-wrap {
+    text-align: center;
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+/* Product name */
+.product-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Product price */
+.product-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+}
+
+/* Size and color info */
+.product-size-color {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+/* Add to cart button */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-cart-wrap {
+        flex: 1 1 calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 576px) {
+    .product-cart-wrap {
+        flex: 1 1 calc(100% - 1rem);
+    }
+}
+
+</style>
+
+
+
+
+</head>
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shop</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/home">Home</a>
+                            <span>Shop</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shop Section Begin -->
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="shop__sidebar">
+                        <div class="shop__sidebar__search">
+                            <form action="#">
+                                <input type="text" placeholder="Search...">
+                                <button type="submit"><span class="icon_search"></span></button>
+                            </form>
+                        </div>
+                        <div class="shop__sidebar__accordion">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__categories">
+                                                <ul class="nice-scroll">
+                                                    <%for (let i = 0; i<category.length; i++){ %>
+                                                    <li><a href=""><%= category[i].name %></a></li>
+                                                  <%}%>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__brand">
+                                                <ul>
+                                                    <%for (let i = 0; i<brand.length; i++){%>
+                                                    <li><a href="#"><%=brand[i].brandName%></a></li>
+                                                    <%}%>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                    </div>
+                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__price">
+                                                <ul>
+                                                    <li><a href="#">$0.00 - $50.00</a></li>
+                                                    <li><a href="#">$50.00 - $100.00</a></li>
+                                                    <li><a href="#">$100.00 - $150.00</a></li>
+                                                    <li><a href="#">$150.00 - $200.00</a></li>
+                                                    <li><a href="#">$200.00 - $250.00</a></li>
+                                                    <li><a href="#">250.00+</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                                    </div>
+                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__size">
+                                                <label for="xs">xs
+                                                    <input type="radio" id="xs">
+                                                </label>
+                                                <label for="sm">s
+                                                    <input type="radio" id="sm">
+                                                </label>
+                                                <label for="md">m
+                                                    <input type="radio" id="md">
+                                                </label>
+                                                <label for="xl">xl
+                                                    <input type="radio" id="xl">
+                                                </label>
+                                                <label for="2xl">2xl
+                                                    <input type="radio" id="2xl">
+                                                </label>
+                                                <label for="xxl">xxl
+                                                    <input type="radio" id="xxl">
+                                                </label>
+                                                <label for="3xl">3xl
+                                                    <input type="radio" id="3xl">
+                                                </label>
+                                                <label for="4xl">4xl
+                                                    <input type="radio" id="4xl">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
+                                    </div>
+                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__color">
+                                                <label class="c-1" for="sp-1">
+                                                    <input type="radio" id="sp-1">
+                                                </label>
+                                                <label class="c-2" for="sp-2">
+                                                    <input type="radio" id="sp-2">
+                                                </label>
+                                                <label class="c-3" for="sp-3">
+                                                    <input type="radio" id="sp-3">
+                                                </label>
+                                                <label class="c-4" for="sp-4">
+                                                    <input type="radio" id="sp-4">
+                                                </label>
+                                                <label class="c-5" for="sp-5">
+                                                    <input type="radio" id="sp-5">
+                                                </label>
+                                                <label class="c-6" for="sp-6">
+                                                    <input type="radio" id="sp-6">
+                                                </label>
+                                                <label class="c-7" for="sp-7">
+                                                    <input type="radio" id="sp-7">
+                                                </label>
+                                                <label class="c-8" for="sp-8">
+                                                    <input type="radio" id="sp-8">
+                                                </label>
+                                                <label class="c-9" for="sp-9">
+                                                    <input type="radio" id="sp-9">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
+                                    </div>
+                                    <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__tags">
+                                                <a href="#">Product</a>
+                                                <a href="#">Bags</a>
+                                                <a href="#">Shoes</a>
+                                                <a href="#">Fashio</a>
+                                                <a href="#">Clothing</a>
+                                                <a href="#">Hats</a>
+                                                <a href="#">Accessories</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="shop__product__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__left">
+                                    <p>Showing 1–12 of 126 results</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__right">
+                                    <p>Sort by Price:</p>
+                                    <select>
+                                        <option value="">Low To High</option>
+                                        <option value="">$0 - $55</option>
+                                        <option value="">$55 - $100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row product__filter">
+                        <% for (let i = 0; i < product.length; i++) { %>
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                <div class="product-cart-wrap mb-4">
+                                    <div class="product-img-action-wrap position-relative">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="/productDetails/<%= product[i]._id %>">
+                                                <img class="img-fluid rounded" src="<%= product[i].productImage[0] %>" alt="<%= product[i].productName %>">
+                                            </a>
+                                        </div>
+                                       
+                                    </div>
+                    
+                                    <div class="product-content-wrap text-center p-3">
+                                        <h6 class="product-name mb-2"><%= product[i].productName %></h6>
+                    
+                                        <% if (product[i].combos && product[i].combos.length > 0) { %>
+                                            <% for (let j = 0; j < product[i].combos.length; j++) { %>
+                                                <h5 class="product-price mb-2">₹<%= product[i].combos[j].salePrice %></h5>
+                                                <p class="product-size-color mb-1">Size: <%= product[i].combos[j].Size %></p>
+                                                <p class="product-size-color mb-3">Colour: <%= product[i].combos[j].Colour %></p>
+            
+                                                <% break; %>
+                                            <% } %>
+                                        <% } else { %>
+                                            <h5 class="product-price mb-2">₹ Not Available</h5>
+                                        <% } %>
+                
+                                        
+                                        <button class="btn btn-primary btn-sm w-100" onclick="addToCart('<%=product[i]._id%>','<%=product[i].combos[0]._id%>')" >Add to Cart</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                        
+                    </div>
+                </div>
+
+
+
+
+
+                
+                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Section End -->
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a class="btn" href="/shop?page=<%= currentPage - 1 %>">Prev</a>
+        <% } %>
+        
+   
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a class="btn <%= currentPage === i ? 'active' : '' %>" href="/shop?page=<%= i %>"><%= i %></a>
+        <% } %>
+   
+   
+        <% if (currentPage < totalPages) { %>
+          <a class="btn" href="/shop?page=<%= currentPage + 1 %>">Next</a>
+        <% } %>
+      </div>
+
+    <%-include("../../views/partials/user/footer")%>
+
+    <!-- Js Plugins -->
+     <script src="../../user.js/main.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

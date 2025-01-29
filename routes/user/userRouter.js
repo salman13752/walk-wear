@@ -5,6 +5,7 @@ const passport = require("passport");
 const productController = require("../../controllers/user/productController");
 const cartController = require("../../controllers/user/cartController");
 const orderController = require("../../controllers/user/orderController")
+const shopController = require("../../controllers/user/shopController")
 //page not found route
 userRoute.get("/page-not-found", userController. pageNotFound);
 
@@ -64,5 +65,10 @@ userRoute.get("/checkout",orderController.processCheckout)
 userRoute.post("/checkout", orderController.placeOrder);
 // userRoute.get("/orderplaced", userAuth.userCheck, orderController.orderPlaced);
 
+
+
+//for shopping page
+
+userRoute.get("/shop",shopController.loadshop)
   
 module.exports = userRoute;

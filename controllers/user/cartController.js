@@ -39,7 +39,7 @@ const getCart = async (req, res) => {
     });
 
 
-    console.log("cartData",cartData);
+    
     
     res.render("cart", {
       cart: cartData,

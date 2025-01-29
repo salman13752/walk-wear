@@ -109,7 +109,7 @@ a[href="/login"]:hover {
             <nav class="header__menu mobile-menu">
                 <ul>
                     <li class="active"><a href="/">Home</a></li>
-                    <li><a href="./shop.html">Shop</a></li>
+                    <li><a href="/shop">Shop</a></li>
                     <li><a href="#">Pages</a>
                         <ul class="dropdown">
                             <li><a href="./about.html">About Us</a></li>
@@ -133,12 +133,14 @@ a[href="/login"]:hover {
                             <a href="/profile/<%=locals.user._id%>">Profile</a>
                             <a href="/logout">Logout</a>
                         </div>
+                       
                     </div>
+                    <a href="/cart" class="sign-in-link">Cart</a>
                     <%}else {%>
                 <a href="/signup" class="sign-in-link" >Sign Up</a>
                 <a href="/login" >log in</a>
                 <%}%>
-                <a href="/cart" class="search-switch"><img src="" alt="">cart</a>
+               
             
             </div>
         </div>
