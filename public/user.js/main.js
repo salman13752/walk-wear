@@ -47,7 +47,7 @@ async function addToCart(productId,comboId) {
       toast: true,
       position: "top-end",
       icon: "error",
-      title: "Something went wrong. Please try again later!",
+      title: "please log in for Adding to Cart!",
       showConfirmButton: false,
       timer: 3000,
     });

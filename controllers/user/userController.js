@@ -7,7 +7,7 @@ const session = require('express-session'); // For managing user sessions
 const Product = require('../../models/productSchema'); // Product model for MongoDB
 const Category = require('../../models/categorySchema'); // Category model for MongoDB
 const Address = require("../../models/addressSchema")
-
+const Order = require("../../models/orderScheema")
 
 
 // Page Not Found Handler
@@ -271,6 +271,9 @@ const logout = async (req, res) => {
         const id = req.params.id; 
         const user = await User.findById(id);
         const AddressData = await Address.findOne({userId:user._id})
+        const orders = await Order.find({});
+
+       
         
         if (!user) {
             return res.status(404).send('User not found');
@@ -281,7 +284,7 @@ const logout = async (req, res) => {
 
         res.render('user-profile', {
            user,
-           orders:0,
+           orders,
           addressData:AddressData,
           })
     } catch (err) {

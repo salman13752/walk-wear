@@ -43,22 +43,21 @@ const processCheckout = async (req, res) => {
   
           // Attach combo details to the item
           item.comboDetails = combo;
-          console.log(item.comboDetails, "itemcombodetials");
+          
         }
       }
   
       const address = addresses.flatMap((doc) => doc.address);
       // Filter out items with zero quantity
       const validCartItems = cart.items.filter((item) => item.quantity > 0);
-      console.log(validCartItems, "validcart items");
+     
   
       // Check stock for each valid item
       for (const item of validCartItems) {
         const availableQuantity = item.comboDetails
           ? item.comboDetails.quantity
           : item.productId.stock;
-        console.log(availableQuantity, "avalilable quantity");
-        console.log(availableQuantity, "tem quantity");
+        
       }
       // Calculate total price
       const totalPrice = validCartItems.reduce(
@@ -100,6 +99,7 @@ const placeOrder = async (req, res) => {
     try {
       const userId = req.session.user;
       const { selectedAddress, paymentMethod } = req.body;
+   
   
       if (!selectedAddress || !paymentMethod) {
         return res
@@ -112,10 +112,11 @@ const placeOrder = async (req, res) => {
           path: "items.productId",
           populate: {
             path: "combos",
-            model: "Combo", // Adjust the model name if different
+            model: "Combo", 
           },
         })
         .lean();
+       
   
       if (!cart || cart.items.length === 0) {
         return res.status(400).json({ success: false, message: "Cart is empty" });
@@ -127,12 +128,13 @@ const placeOrder = async (req, res) => {
           .status(400)
           .json({ success: false, message: "No valid items in cart" });
       }
-  
+
       const orderItems = await Promise.all(
         validCartItems.map(async (item) => {
           const selectedCombo = item.productId.combos.find(
             (combo) => combo._id.toString() === item.comboId.toString()
           );
+         
           if (!selectedCombo) {
             throw new Error(
               `Combo not found for product: ${item.productId.productName}`
@@ -144,14 +146,19 @@ const placeOrder = async (req, res) => {
             quantity: item.quantity,
             price: selectedCombo.salePrice,
             totalPrice: item.quantity * selectedCombo.salePrice,
-            RAM: selectedCombo.ram,
-            Storage: selectedCombo.storage,
-            color: selectedCombo.color[0],
+            Size: selectedCombo.Size,
+            Colour: selectedCombo.Colour,
             status: "Pending",
           };
         })
       );
   
+      
+
+
+
+
+
       const totalAmount = orderItems.reduce(
         (acc, item) => acc + item.totalPrice,
         0
@@ -201,15 +208,12 @@ const placeOrder = async (req, res) => {
   
       // Clear the cart
       await Cart.findOneAndUpdate({ userId }, { $set: { items: [] } });
-      res
-        .status(200)
-        .json({ success: true, message: "order placed successfully" });
+      
+
+      res.render("Order-placed",{user:userId})
     } catch (error) {
-      console.error("Error placing order:", error.message);
-      res.status(500).json({
-        success: false,
-        message: error.message || "Internal server error",
-      });
+      console.error("Error placing order:",error);
+     
     }
   };
   

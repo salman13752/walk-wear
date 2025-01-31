@@ -34,18 +34,15 @@ const orderSchema = new Schema(
           type: Number,
           required: true,
         },
-        RAM: {
+        Size: {
           type: String,
           required: true,
         },
-        Storage: {
+        Colour: {
           type: String,
           required: true,
         },
-        color: {
-          type: String,
-          required: true,
-        },
+       
         totalPrice: {
           type: Number,
           required: true,
