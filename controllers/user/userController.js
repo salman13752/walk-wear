@@ -6,7 +6,7 @@ const User = require('../../models/userSchema'); // User model for MongoDB
 const session = require('express-session'); // For managing user sessions
 const Product = require('../../models/productSchema'); // Product model for MongoDB
 const Category = require('../../models/categorySchema'); // Category model for MongoDB
-
+const Address = require("../../models/addressSchema")
 
 
 
@@ -15,7 +15,8 @@ const pageNotFound = async (req, res) => {
     try {
         res.render('page-404'); 
     } catch (error) {
-        res.redirect('/pageNotFound'); 
+        console.log("Eroor in page not found",error);
+         
     }
 };
 
@@ -269,15 +270,20 @@ const logout = async (req, res) => {
         // Fetch user details
         const id = req.params.id; 
         const user = await User.findById(id);
-
+        const AddressData = await Address.findOne({userId:user._id})
+        
         if (!user) {
             return res.status(404).send('User not found');
         }
 
-        // Fetch orders for the user
-        // const orders = await Order.find({ userId: req.user.id });
+        
+        
 
-        res.render('user-profile', { user,orders:0}); // Pass both user and orders to the view
+        res.render('user-profile', {
+           user,
+           orders:0,
+          addressData:AddressData,
+          })
     } catch (err) {
         console.error(err);
         res.status(500).send('Error loading profile');
@@ -320,6 +326,163 @@ const updateProfile = async (req, res) => {
   }
 };
 
+
+const addAddress = async(req,res)=>{
+  try {
+    const user = req.session.user
+    
+    
+    res.render("addAddress",{user:user})
+  } catch (error) {
+    console.log("error",error);
+    
+  }
+}
+
+
+const postAddAddress = async (req, res) => {
+  try {
+    const userId = req.session.user;
+    const userData = await User.findOne({ _id:userId });
+    const { addressType, name, city, landMark, state, pincode, phone, altPhone } = req.body;
+
+    const userAddress = await Address.findOne({ userId: userData._id });
+    
+    if (!userAddress) {
+      const newAddress = new Address({
+        userId: userData._id,
+        address: [{ addressType, name, city, landMark, state, pincode, phone, altPhone }]
+      });
+      await newAddress.save();
+    } else {
+      userAddress.address.push({ addressType, name, city, landMark, state, pincode, phone, altPhone });
+      await userAddress.save();
+
+    }
+
+   
+
+    res.redirect(`/profile/${userId}`)
+  } catch (error) {
+    console.log("Error in saving address",error);
+    
+  }
+};
+
+
+const editAddress = async (req, res) => {
+  try {
+
+    const addressId = req.query.id;
+    const user = req.session.user;
+
+    
+    
+
+    const currAddress = await Address.findOne({
+      "address._id": addressId,
+    });
+
+    if (!currAddress) {
+      return res.redirect("/page-not-found")
+    }
+
+    const addressData = currAddress.address.find((item) => {
+      return item.id.toString() === addressId.toString();
+    })
+
+    if (!addressData) {
+      return res.redirect("/page-not-found")
+    }
+
+    res.render("edit-address", { address: addressData, user: user })
+
+  } catch (error) {
+    res.redirect("/page-not-found")
+console.log("Eroor in edit adress",error);
+  }
+}
+
+const postEditAddress = async (req, res) => {
+  try {
+    const data = req.body;
+    const addressId = req.query.id;
+    const user = req.session.user;
+    
+
+    const findAddress = await Address.findOne({ "address._id": addressId });
+
+    if (!findAddress) {
+      res.redirect("/page-not-found")
+    }
+
+    await Address.updateOne(
+      { "address._id": addressId },
+      {
+        $set: {
+          "address.$": {
+            _id: addressId,
+            addressType: data.addressType,
+            name: data.name,
+            city: data.city,
+            landMark: data.landMark,
+            state: data.state,
+            pincode: data.pincode,
+            phone: data.phone,
+            altPhone: data.altPhone,
+          }
+        }
+      }
+    )
+    res.redirect(`/profile/${user}`)
+
+  } catch (error) {
+console.log("Error in addressEdit page",error);
+res.redirect("/page-not-found")
+
+  }
+}
+
+
+const deleteAddress = async (req, res) => {
+  try {
+    const userId = req.session.user;
+    const addressId = req.query.id;
+    const findAddress = await Address.findOne({ "address._id": addressId });
+   
+    if (!findAddress) {
+      return res.status(404).send("Address not found")
+    }
+
+    await Address.updateOne(
+      { "address._id": addressId },
+      {
+        $pull: {
+          address: {
+            _id: addressId,
+          }
+        }
+      }
+    )
+    
+    
+    res.redirect(`/profile/${userId}`)
+
+  } catch (error) {
+    console.log("Error in delete address",error);
+    res.redirect("/page-not-found")
+    
+
+  }
+}
+
+
+
+
+
+
+
+
 module.exports = {
     pageNotFound,
     loadHomepage,
@@ -332,5 +495,10 @@ module.exports = {
     logout,
     showUserProfile,
     editProfile,
-    updateProfile
+    updateProfile,
+    addAddress,
+    postAddAddress,
+    editAddress,
+    postEditAddress,
+    deleteAddress
 };

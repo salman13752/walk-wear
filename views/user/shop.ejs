@@ -117,7 +117,7 @@
                     <div class="breadcrumb__text">
                         <h4>Shop</h4>
                         <div class="breadcrumb__links">
-                            <a href="/home">Home</a>
+                            <a href="/">Home</a>
                             <span>Shop</span>
                         </div>
                     </div>
@@ -134,8 +134,8 @@
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search...">
+                            <form action="/Search" method="POST">
+                                <input type="text" name="Search" placeholder="Search...">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -181,12 +181,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
+                                                <li><a href="filterPrice?gt=0&lt=500">₹0.00 - ₹500.00</a></li>
+                                                    <li><a href="filterPrice?gt=500&lt=1000">₹500.00 - ₹1000.00</a></li>
+                                                    <li><a href="filterPrice?gt=1000&lt=1500">₹1000.00 - ₹1500.00</a></li>
+                                                    <li><a href="filterPrice?gt=1500&lt=10000">₹1500.00 - ₹10000.00</a></li>
+                                                    
                                                 </ul>
                                             </div>
                                         </div>
@@ -199,30 +198,24 @@
                                     <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__size">
-                                                <label for="xs">xs
+                                                <label for="xs">4
                                                     <input type="radio" id="xs">
                                                 </label>
-                                                <label for="sm">s
+                                                <label for="sm">5
                                                     <input type="radio" id="sm">
                                                 </label>
-                                                <label for="md">m
+                                                <label for="md">6
                                                     <input type="radio" id="md">
                                                 </label>
-                                                <label for="xl">xl
+                                                <label for="xl">7
                                                     <input type="radio" id="xl">
                                                 </label>
-                                                <label for="2xl">2xl
+                                                <label for="2xl">8
                                                     <input type="radio" id="2xl">
                                                 </label>
-                                                <label for="xxl">xxl
-                                                    <input type="radio" id="xxl">
-                                                </label>
-                                                <label for="3xl">3xl
-                                                    <input type="radio" id="3xl">
-                                                </label>
-                                                <label for="4xl">4xl
-                                                    <input type="radio" id="4xl">
-                                                </label>
+                                                
+                                               
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -383,6 +376,7 @@
     <%-include("../../views/partials/user/footer")%>
 
     <!-- Js Plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      <script src="../../user.js/main.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

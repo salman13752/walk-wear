@@ -80,7 +80,7 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
                     <div class="address__info">
                       <div class="address__header">
                         <input type="radio" name="selectedAddress" value="<%= address._id %>" <%= index === 0 ? "checked" : "" %>>
-                        <h4 class="customer__name"><%= user.name %></h4>
+                        
                         <span class="address__type"><%= address.addressType %></span>
                       </div>
                       <p class="address__details">
@@ -89,7 +89,7 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
                       </p>
                       <p class="contact__number"><%= address.phone %></p>
                     </div>
-                    <button type="button" class="change__address" onclick="toggleAddressModal()">CHANGE</button>
+                    <button type="button" class="change__address"><a href="/editAddress">Edit</a></button>
                   </div>
                 <% }); %>
               <% } else { %>

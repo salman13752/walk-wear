@@ -71,5 +71,18 @@ userRoute.get("/shop",shopController.loadshop)
 
 // for filtering 
 userRoute.get("/filter",shopController.filterProduct)
+userRoute.get("/filterPrice",shopController.filterByPrice)
   
+
+
+//for search 
+userRoute.post("/Search",shopController.searchProducts)
 module.exports = userRoute;
+
+// for add address
+
+userRoute.get("/addAddress",userController.addAddress)
+userRoute.post("/addAddress",userController.postAddAddress)
+userRoute.get("/editAddress",userController.editAddress)
+userRoute.post("/editAddress",userController.postEditAddress)
+userRoute.get("/deletAddress",userController.deleteAddress)

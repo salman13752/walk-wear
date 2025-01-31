@@ -1,8 +1,6 @@
 
 <%-include("../../views/partials/user/header")%>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Details</title>
+
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
@@ -12,11 +10,7 @@
 
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>User Profile | <%= user.name %></title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,202 +18,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <style>
-        :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #818cf8;
-            --accent-color: #c7d2fe;
-            --text-color: #1f2937;
-            --bg-color: #f3f4f6;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        .profile-container {
-            max-width: 1100px;
-            margin: 2rem auto;
-            padding: 2rem;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            background-color: white;
-            border-radius: 60px;
-            padding: 5px;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: bounceIn 1s;
-        }
-
-        .profile-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .profile-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .info-item {
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            background: #f8fafc;
-            transition: all 0.3s ease;
-        }
-
-        .info-item:hover {
-            background: #f1f5f9;
-            transform: scale(1.02);
-        }
-
-        .btn-edit {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-        }
-
-        .btn-edit:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
-            color: white;
-        }
-
-        .order-card {
-            border-left: 4px solid var(--primary-color);
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .order-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .status-badge {
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .status-badge.active {
-            background: #10b981;
-            color: white;
-        }
-
-        .status-badge.cancelled {
-            background: #ef4444;
-            color: white;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: #6b7280;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            color: var(--accent-color);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .stat-card {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--secondary-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color);
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/user/userProfile.css">
 </head>
 <body>
+
+    
+      
     <div class="profile-container">
         <div class="profile-header animate__animated animate__fadeIn">
             <div class="profile-avatar">
@@ -276,11 +80,34 @@
                         <p class="mb-1"><i class="fas fa-envelope me-3"></i><strong>Email</strong></p>
                         <p class="mb-0 ms-4 ps-2"><%= user.email %></p>
                     </div>
+                    <%if (addressData){%>
                     <div class="info-item">
-                        <p class="mb-1"><i class="fas fa-map-marker-alt me-3"></i><strong>Address</strong></p>
-                        <p class="mb-0 ms-4 ps-2"><%= user.address %></p>
+                       
+                       
+
+                            <% addressData.address.forEach((address)=> {%>
+                                <p class="mb-1"><i class="fas fa-map-marker-alt me-3"></i><strong>Address</strong></p>
+                                <div>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.addressType%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.name%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.city%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.landMark%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.state%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.pincode%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.phone%></p>
+                        <p class="mb-0 ms-4 ps-2"></Address><%= address.altPhone%></p> 
+                        <button class="btn-edit"  ><a href="/editAddress?id=<%=address._id%>">edit address</a></button>
+                        <button class="btn-delete"><a href="/deletAddress?id=<%=address._id%>"  onclick="return confirm('Are you confirm delete this address ?')">delete address</a></button>
+                        <br>
+                        <br>
                     </div>
-                    <button><a href="/addAdres/<%= user._id%>"> add New Adress</a></button>
+                    <%})%>
+                    <%}else {%>
+                         <p>no adress</p>
+                        <%}%>
+                   
+                </div>
+                <button class="btn-addnewAddress"><a href="/addAddress"> add New Address</a></button>
                 </div>
             </div>
 
@@ -329,8 +156,6 @@
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
 
 
 

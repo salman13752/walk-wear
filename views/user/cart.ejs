@@ -7,41 +7,41 @@ rel="stylesheet"
 href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
 />
 
-<!--=============== SWIPER CSS ===============-->
 <link
 rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
 />
 
-<!--=============== CSS ===============-->
+
 <link rel="stylesheet" href="../../css/user/home.css" />
 <link rel="stylesheet" href="../../css/user/cart.css">
 <header class="header">
   
   </header>
-<!--=============== MAIN ===============-->
-<main class="main">
- <!--=============== BREADCRUMB ===============-->
- <section class="breadcrumb">
-   <ul class="breadcrumb__list flex container">
-     <li><a href="index.html" class="breadcrumb__link">Home</a></li>
-     <li><span class="breadcrumb__link"></span>></li>
-     <li><span class="breadcrumb__link">Shop</span></li>
-     <li><span class="breadcrumb__link"></span>></li>
-     <li><span class="breadcrumb__link">Cart</span></li>
-   </ul>
- </section>
 
- <!--=============== CART ===============-->
+<main class="main">
+ 
+ <section class="breadcrumb">
+  <ul class="breadcrumb__list flex container">
+    <li><a href="/" class="breadcrumb__link">Home</a></li>
+    <li>></li>
+    <li><a href="/shop" class="breadcrumb__link">Shop</a></li>
+    <li>></li>
+    <li><a href="/cart" class="breadcrumb__link">Cart</a></li>
+  </ul>
+</section>
+
+
+
  <% if (cart && cart.items && cart.items.length > 0) { %>
  <section class="cart section--lg container">
    <div class="cart__container">
-     <!-- Cart Items -->
+   
      <div class="cart__items">
 
         
           <% cart.items.forEach(item => { %>
-            <!-- Cart Item -->
+          
             <div class="cart__item">
               <div class="cart__item-img-container">
                 <img
@@ -107,9 +107,9 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
         
     
        
-     <!-- Cart Summary -->
+    
      <div class="cart__summary">
-       <!-- Cart Total -->
+     
        <div class="cart__total">
          <h3 class="section__title">Cart Total</h3>
          <table class="cart__total-table">
@@ -117,10 +117,7 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
              <td class="cart__total-title">Subtotal:</td>
              <td class="cart__total-price">&#8377; <%= cart.totalPrice %></td>
            </tr>
-           <!-- <tr>
-             <td class="cart__total-title">Shipping:</td>
-             <td class="cart__total-price">$10.00</td>
-           </tr> -->
+          
            <tr>
              <td class="cart__total-title">Total:</td>
              <td class="cart__total-price">&#8377; <%= cart.totalPrice %> </td>
@@ -133,7 +130,7 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
      </div>
      <% } else { %>
         <div class="cart__container">
-          <!-- Cart Items -->
+        
           <div class="cart__items ">
             <p class="text-center" >Cart is empty</p>
             <button class="btn " >Shop now</button>
@@ -148,18 +145,18 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
 
 
 <%-include("../../views/partials/user/footer")%>
-  <!--=============== SWIPER JS ===============-->
+ 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- Include jQuery before your script -->
 
-  <!--=============== MAIN JS ===============-->
-  <!-- Include jQuery before your script -->
+
+ 
+ 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   <script src="../../user.js/cart.js" ></script>
-<!--=============== MAIN JS ===============-->
+
 <script src="../../user.js/main.js"></script>
 </body>
 </body>

@@ -54,11 +54,12 @@ const getCart = async (req, res) => {
 
 const addToCart = async (req, res) => {
   try {
+    
+    
     const { productId, comboId } = req.params;
     const { quantity } = req.body;
     const user = req.session.user;
-   
-
+    
     if (!productId || !comboId || !quantity || quantity <= 0) {
       return res
         .status(400)
@@ -102,7 +103,7 @@ const addToCart = async (req, res) => {
       }
 
       if (existingItem) {
-        console.log(existingItem.quantity, "inside if looop");
+       
         existingItem.quantity += quantity;
         existingItem.totalPrice = combo.salePrice * existingItem.quantity;
       } else {

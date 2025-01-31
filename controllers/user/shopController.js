@@ -55,8 +55,6 @@ const loadshop = async (req, res) => {
             totalPages:totalPages
         });
     } catch (error) {
-        console.log("eroor on loadshop",error);
-        
         res.redirect("/pageNotFound");
     }
 };
@@ -150,7 +148,114 @@ res.render("shop",{
 
 
 
+
+
+
+const filterByPrice = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const userData = await User.findOne({ _id: user });
+        const brands = await brand.find({}).lean();
+        const categories = await category.find({ isListed: true }).lean();
+        console.log("gt:", req.query.gt, "lt:", req.query.lt);
+
+        let findProducts = await Product.find({
+            "combos.salePrice": { $gt: req.query.gt, $lt: req.query.lt },
+            isBlocked: false,
+            "combos.quantity": { $gt: 0 }
+        }).lean();
+
+       
+
+        findProducts.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+
+        let itemsPerPage = 6;
+        let currentPage = parseInt(req.query.page) || 1;
+        let startIndex = (currentPage - 1) * itemsPerPage;
+        let endIndex = startIndex + itemsPerPage;
+        let totalPages = Math.ceil(findProducts.length / itemsPerPage);
+        const currentProduct = findProducts.slice(startIndex, endIndex);
+
+        req.session.filteredProducts = findProducts;
+
+       res.render("shop",{
+        user:userData,
+        product:currentProduct,
+        category:categories,
+        brand:brands,
+        totalPages,
+        currentPage
+       })
+    } catch (error) {
+        console.log(error)
+        res.redirect("/pageNotFound")
+    }
+};
+
+
+
+const searchProducts = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const userData = await User.findOne({ _id: user });
+        let search = req.body.Search;
+        
+        
+        const brands = await brand.find({}).lean();
+        const categories = await category.find({ isListed: true }).lean();
+        const categoryIds = categories.map(category => category._id.toString());
+        let searchResult = [];        
+
+        if (req.session.filteredProducts && req.session.filteredProducts.length > 0) {
+            searchResult = req.session.filteredProducts.filter(product =>
+                product.productName.toLowerCase().includes(search.toLowerCase())
+            );
+           
+            
+        } else {
+            searchResult = await Product.find({
+                productName: { $regex: ".*" + search + ".*", $options: "i" },
+                isBlocked: false,
+               "combos.quantity": { $gt: 0 },
+                category: { $in: categoryIds }
+            });
+           
+        }
+
+
+
+    searchResult.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+       let itemsPerPage = 6;
+       let currentPage = parseInt(req.query.page) || 1;
+       let startIndex = (currentPage - 1) * itemsPerPage;
+       let endIndex = startIndex + itemsPerPage;
+       let totalPages = Math.ceil(searchResult.length / itemsPerPage);
+       const currentProduct = searchResult.slice(startIndex, endIndex);
+
+    res.render("shop", {
+     user: userData,
+     product: currentProduct,
+     category: categories,
+     brand: brands,
+     totalPages,
+     currentPage,
+     count: searchResult.length,
+});
+
+    } catch (error) {
+       console.log("Error",error);
+       res.redirect("/pageNotFound")
+       
+    }
+};
+
+
+
+
+
 module.exports={
     loadshop,
     filterProduct,
+    filterByPrice,
+    searchProducts
 }

@@ -1,0 +1,129 @@
+<%-include("../../views/partials/user/header")%>
+<div class="container mt-4">
+   <h3 class="mt-3" style="color: #046963; margin-bottom:70px">Edit User Address</h3>
+   <form id="addressForm" method="POST" action="/editAddress?id=<%= address._id.toLocaleString() %>" class="border-0 p-3">
+       <div class="row mb-50">
+           <div class="form-group col-md-4">
+               <label for="addressType">Address Type:</label>
+               <input type="text" class="form-control border-3" value="<%= address.addressType %>" id="addressType" name="addressType" required>
+           </div>
+           <div class="form-group col-md-4">
+               <label for="name">Name:</label>
+               <input type="text" class="form-control border-3" value="<%= address.name %>" id="name" name="name" required>
+           </div>
+           <div class="form-group col-md-4">
+               <label for="city">City:</label>
+               <input type="text" class="form-control border-3" id="city" value="<%= address.city %>" name="city" required>
+           </div>
+       </div>
+       <div class="row mb-3">
+           <div class="form-group col-md-4">
+               <label for="landMark">Landmark:</label>
+               <input type="text" class="form-control border-3" value="<%= address.landMark%>" id="landMark" name="landMark" required>
+           </div>
+           <div class="form-group col-md-4">
+               <label for="state">State:</label>
+               <input type="text" class="form-control border-3" value="<%= address.state %>" id="state" name="state" required>
+           </div>
+           <div class="form-group col-md-4">
+               <label for="pincode">Pincode:</label>
+               <input type="number" class="form-control border-3" value="<%= address.pincode %>" id="pincode" name="pincode" required>
+           </div>
+       </div>
+       <div class="row mb-3">
+           <div class="form-group col-md-4">
+               <label for="phone">Phone:</label>
+               <input type="number" class="form-control border-3" id="phone" value="<%= address.phone %>" name="phone" required>
+           </div>
+           <div class="form-group col-md-4">
+               <label for="altPhone">Alternate Phone:</label>
+               <input type="number" class="form-control border-3" id="altPhone" value="<%= address.altPhone %>" name="altPhone" required>
+           </div>
+       </div>
+       <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
+   </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('submitButton').addEventListener('click', function (event) {
+        if (!validateForm()) {
+            event.preventDefault();
+        }
+    });
+ 
+    function validateForm() {
+        let isValid = true;
+        let errorMessages = [];
+        const requiredFields = ["addressType", "name", "city", "landMark", "state", "pincode", "phone", "altPhone"];
+        
+        for (let field of requiredFields) {
+            const input = document.getElementById(field);
+            input.value = input.value.trim(); // Remove leading & trailing spaces
+ 
+            if (!input.value) { // If field is empty after trimming
+                errorMessages.push(`${field} cannot be empty or spaces only.`);
+                isValid = false;
+            }
+        }
+ 
+        // Validate Pincode (Must be 6 digits)
+        const pincode = document.getElementById("pincode").value.trim();
+        if (!/^\d{6}$/.test(pincode)) {
+            errorMessages.push('Pincode must be exactly 6 digits.');
+            isValid = false;
+        }
+ 
+        // Validate Phone Numbers (Must be exactly 10 digits)
+        const phone = document.getElementById("phone").value.trim();
+        const altPhone = document.getElementById("altPhone").value.trim();
+ 
+        if (!/^\d{10}$/.test(phone)) {
+            errorMessages.push('Phone number must be exactly 10 digits.');
+            isValid = false;
+        }
+ 
+        if (!/^\d{10}$/.test(altPhone)) {
+            errorMessages.push('Alternate phone number must be exactly 10 digits.');
+            isValid = false;
+        }
+ 
+        // Prevent duplicate phone numbers
+        if (phone === altPhone) {
+            errorMessages.push('Phone number and alternate phone number cannot be the same.');
+            isValid = false;
+        }
+ 
+        // Show all errors together
+        if (!isValid) {
+            Swal.fire({
+                title: 'Validation Error',
+                html: errorMessages.join('<br>'), // Show multiple errors
+                icon: 'error'
+            });
+        }
+ 
+        return isValid;
+    }
+ 
+    // Prevents users from entering only spaces while typing
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', function () {
+            if (/^\s+$/.test(this.value)) {
+                this.value = ''; // Clear the field
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Only spaces are not allowed!',
+                    icon: 'error'
+                });
+            }
+        });
+    });
+ </script>
+ 
+ 
+ 
+ 
+<%-include("../../views/partials/user/footer")%>
+
+
