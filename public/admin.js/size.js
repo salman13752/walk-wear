@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   function selectCombo(button) {
-    // Retrieve data from the button's dataset
+    
     const productId = button.dataset.productId;
     const comboId = button.getAttribute('data-combos-id');
     const size = button.dataset.size;
 
-    // Perform your fetch request using the dataset values
+    
     fetch(`/productDetails/combo/${productId}?size=${size}&comboId=${comboId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          // Update the price information
+      
           document.getElementById("currentPrice").innerHTML = `<span> ₹${data.combo.salePrice.toLocaleString()} </span>`;
           document.getElementById("regularPrice").innerHTML = `<del>₹${data.combo.regularPrice.toLocaleString()}</del>`;
 
-          // Update the quantity status and action buttons
+    
           const quantityStatus = document.getElementById("quantityStatus");
           const actionButtons = document.getElementById("actionButtons");
 
@@ -53,3 +53,51 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attach the selectCombo function to the global scope
   window.selectCombo = selectCombo;
 });
+
+
+
+
+  $('#slider').owlCarousel({
+    items: 1,
+    loop: true,
+    autoplay: true,
+    dots: true,
+  });
+  $('#thumb').owlCarousel({
+    items: 4,
+    margin: 10,
+    dots: true,
+    autoplay: true,
+    
+  });
+
+  
+document.addEventListener("DOMContentLoaded", function () {
+
+  const images = document.querySelectorAll("#slider .item img");
+
+  
+  images.forEach((image) => {
+    const panzoomInstance = Panzoom(image, {
+      maxScale: 3, 
+      contain: "outside", 
+    });
+
+    
+    image.parentElement.addEventListener("wheel", panzoomInstance.zoomWithWheel);
+  });
+});
+
+
+
+document.querySelector(".qtyminus").addEventListener("click", function () {
+        let qty = document.querySelector("#quantity");
+        let value = parseInt(qty.value);
+        if (value > 1) qty.value = value - 1;
+    });
+
+    document.querySelector(".qtyplus").addEventListener("click", function () {
+        let qty = document.querySelector("#quantity");
+        let value = parseInt(qty.value);
+        qty.value = value + 1;
+    });

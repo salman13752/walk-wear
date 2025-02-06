@@ -7,11 +7,15 @@ const session = require("express-session")
 
 const productDetails = async (req, res) => {
   try {
-    const user = req.session.user;
+    const userId = req.session.user;
     const { productId } = req.params;
 
-    // Fetch the product details by its ID
-    const productData = await Product.findOne({ _id: productId });
+    // fetch the product 
+    const productData = await Product.findOne({ _id: productId }).populate("brand");
+    const userdata = await User.findOne({ _id: userId })
+    console.log(userId,"userId")
+
+
 
     if (!productData) {
       return res.status(404).send('Product not found');
@@ -21,7 +25,7 @@ const productDetails = async (req, res) => {
     const relatedProducts = await Product.find({ category: productData.category, _id: { $ne: productId } }).limit(5);
 
     res.render('product_Details', {
-      user: user,
+      user: userdata,
       product: productData,
       relatedProducts: relatedProducts,
     });
@@ -38,15 +42,15 @@ const loadComboDetails = async (req, res) => {
   try {
     const { id } = req.params;
     const { size, comboId } = req.query;
-  
+
 
     const product = await Product.findById(id);
-   
+
 
     const selectedCombo = product.combos.find(
       (combo) => combo.Size === size && combo._id.toString() === comboId
     );
-    
+
 
     if (!selectedCombo) {
       return res
@@ -68,10 +72,10 @@ const loadComboDetails = async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
-    
 
-  
-  module.exports = {
-    productDetails,
-    loadComboDetails,
-  }
+
+
+module.exports = {
+  productDetails,
+  loadComboDetails,
+}

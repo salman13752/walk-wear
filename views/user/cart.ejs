@@ -49,7 +49,7 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
                   alt="Product Image"
                   class="cart__item-img"
                 />
-                <span class="cart__item-stock-desktop">In Stock</span>
+               
               </div>
               <div class="cart__item-details">
                 <h3 class="cart__item-title">
@@ -57,12 +57,12 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
                 </h3>
                 <% if(item.combo.quantity <= 0) {%>
                 <span class="text-danger h5">Item is out of stock</span>
-                <% } %>
+                <% }else{ %>
                 <div class="cart__item-meta">
                   <span class="cart__item-stock-mobile">In Stock</span>
                   <div class="cart__item-specs">
-                   
-                    <span class="cart__item-color">Color: <%= item.combo.Colour[0] %></span>
+                   <%}%>
+                    <span class="cart__item-color">Color: <%= item.combo.Colour %></span>
                   </div>
                 </div>
                 <div class="cart__item-prices">
@@ -151,8 +151,6 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
 
 
 
- 
- 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   <script src="../../user.js/cart.js" ></script>

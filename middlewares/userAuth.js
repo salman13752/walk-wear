@@ -6,7 +6,7 @@ const userAuth = (req,res,next)=>{
         return res.redirect("/");
     }
 
-    next(); // Allow the request to proceed
+    next();
 }
 
 

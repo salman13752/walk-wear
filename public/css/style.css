@@ -1,47 +1,7 @@
 
 
-html,
-body {
-	height: 100%;
-	font-family: "Nunito Sans", sans-serif;
-	-webkit-font-smoothing: antialiased;
-}
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0;
-	color: #111111;
-	font-weight: 400;
-	font-family: "Nunito Sans", sans-serif;
-}
 
-h1 {
-	font-size: 70px;
-}
-
-h2 {
-	font-size: 36px;
-}
-
-h3 {
-	font-size: 30px;
-}
-
-h4 {
-	font-size: 24px;
-}
-
-h5 {
-	font-size: 18px;
-}
-
-h6 {
-	font-size: 16px;
-}
 
 p {
 	font-size: 15px;
@@ -52,9 +12,7 @@ p {
 	margin: 0 0 15px 0;
 }
 
-img {
-	max-width: 100%;
-}
+
 
 input:focus,
 select:focus,
@@ -651,7 +609,7 @@ ol {
 }
 
 .banner__item.banner__item--last {
-	margin-top: 100px;
+	margin-top: 500px;
 }
 
 .banner__item__pic {

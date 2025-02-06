@@ -24,7 +24,7 @@ const addProducts = async (req, res) => {
     const ProductExists = await Product.findOne({ productName });
     if (ProductExists) {
       return res
-        .status(400)
+        .status(400) // bad request
         .send("Product already exists, try another product");
     }
 

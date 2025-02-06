@@ -2,6 +2,7 @@
 async function addToCart(productId,comboId) {
   const quantityInput = document.querySelector(".quantity");
  
+
   
   const quantity = quantityInput ? parseInt(quantityInput.value, 10) : 1; // Default to 1 if input is not found or invalid
   // Construct the route dynamically using template literals

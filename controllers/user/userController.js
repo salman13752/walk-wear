@@ -263,7 +263,7 @@ const logout = async (req, res) => {
   };
 
 
-  // for user profile
+                                                                                    // for user profile
 
   const showUserProfile = async (req, res) => {
     try {
@@ -272,9 +272,8 @@ const logout = async (req, res) => {
         const user = await User.findById(id);
         const AddressData = await Address.findOne({userId:user._id})
         const orders = await Order.find({});
-
-       
-        
+        console.log(orders,"oders on show profile");
+                
         if (!user) {
             return res.status(404).send('User not found');
         }
@@ -299,7 +298,7 @@ const editProfile = async (req, res) => {
   const user = await User.findById(id);
 
   if (!user) {
-      return res.status(404).send('User not found');
+   return res.status(404).send('User not found');
   }
 
   res.render('edit-profile', { user });
@@ -312,7 +311,7 @@ const updateProfile = async (req, res) => {
 
   try {
     const id = req.params.id;
-      const updatedUser = await User.findByIdAndUpdate(
+       const updatedUser = await User.findByIdAndUpdate(
           id,
           { name, email, address },
           { new: true }
@@ -479,8 +478,42 @@ const deleteAddress = async (req, res) => {
   }
 }
 
+const getAddress = async(req,res)=>{
+try {
+  const userId = req.session.user;
+  const userData = await User.findOne({ _id:userId });
+  const AddressData = await Address.findOne({userId:userId})
+  
+  res.render("addressPage",{
+    addressData:AddressData,
+    user:userData,
+  })
+} catch (error) {
+  console.log(error);
+  
+}
 
+}
+ 
 
+const loadOrder = async (req, res) => {
+  try {
+    const userId = req.session.user;
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    const orders = await Order.find({ userId: userId });
+    res.render("ordersPage", {
+      orders,
+      user,
+    });
+  } catch (error) {
+    console.error("Error loading orders:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
 
 
 
@@ -503,5 +536,7 @@ module.exports = {
     postAddAddress,
     editAddress,
     postEditAddress,
-    deleteAddress
+    deleteAddress,
+    getAddress,
+    loadOrder
 };

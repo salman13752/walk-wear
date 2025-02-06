@@ -27,7 +27,7 @@ const processCheckout = async (req, res) => {
           .json({ sucess: false, message: "no cart available" });
       }
   
-      // Fetch combo details manually
+      //fetch combo detail
       for (const item of cart.items) {
         if (item.comboId) {
           const product = await Product.findById(item.productId);
@@ -41,25 +41,25 @@ const processCheckout = async (req, res) => {
               .json({ sucess: false, message: "combos not available" });
           }
   
-          // Attach combo details to the item
+          //Attach combo details to the item
           item.comboDetails = combo;
           
         }
       }
   
       const address = addresses.flatMap((doc) => doc.address);
-      // Filter out items with zero quantity
+      // filter out items with zero quantity
       const validCartItems = cart.items.filter((item) => item.quantity > 0);
      
   
-      // Check stock for each valid item
+      // check stock for each valid item
       for (const item of validCartItems) {
         const availableQuantity = item.comboDetails
           ? item.comboDetails.quantity
           : item.productId.stock;
         
       }
-      // Calculate total price
+      // calculate total price
       const totalPrice = validCartItems.reduce(
         (sum, item) =>
           sum +
@@ -68,7 +68,7 @@ const processCheckout = async (req, res) => {
         0
       );
   
-      // Calculate the cart summary
+      // calculate the cart summary
       const cartSummary = {
         totalPrice,
       };    
@@ -175,7 +175,7 @@ const placeOrder = async (req, res) => {
   
       await newOrder.save();
   
-      // Update product quantities in parallel
+      // update product quantities
       await Promise.all(
         validCartItems.map(async (item) => {
           const product = await Product.findById(item.productId._id);
@@ -206,7 +206,7 @@ const placeOrder = async (req, res) => {
         })
       );
   
-      // Clear the cart
+      //clear the cart
       await Cart.findOneAndUpdate({ userId }, { $set: { items: [] } });
       
 

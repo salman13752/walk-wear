@@ -4,7 +4,7 @@ const adminAuth = (req, res, next) => {
         return res.redirect("/admin/login");
     }
 
-    next(); // Allow the request to proceed
+    next(); 
 };
 
 

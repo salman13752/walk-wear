@@ -59,22 +59,22 @@
         
         for (let field of requiredFields) {
             const input = document.getElementById(field);
-            input.value = input.value.trim(); // Remove leading & trailing spaces
+            input.value = input.value.trim(); //Remove space 
  
-            if (!input.value) { // If field is empty after trimming
+            if (!input.value) { 
                 errorMessages.push(`${field} cannot be empty or spaces only.`);
                 isValid = false;
             }
         }
  
-        // Validate Pincode (Must be 6 digits)
+        // pincode validation (must be 6)
         const pincode = document.getElementById("pincode").value.trim();
         if (!/^\d{6}$/.test(pincode)) {
             errorMessages.push('Pincode must be exactly 6 digits.');
             isValid = false;
         }
  
-        // Validate Phone Numbers (Must be exactly 10 digits)
+        //Validate phone number (must be 10)
         const phone = document.getElementById("phone").value.trim();
         const altPhone = document.getElementById("altPhone").value.trim();
  
@@ -88,17 +88,17 @@
             isValid = false;
         }
  
-        // Prevent duplicate phone numbers
+        //prevent duplicate phone numbers
         if (phone === altPhone) {
             errorMessages.push('Phone number and alternate phone number cannot be the same.');
             isValid = false;
         }
  
-        // Show all errors together
+    
         if (!isValid) {
             Swal.fire({
                 title: 'Validation Error',
-                html: errorMessages.join('<br>'), // Show multiple errors
+                html: errorMessages.join('<br>'), //show multiple errors
                 icon: 'error'
             });
         }
@@ -106,11 +106,11 @@
         return isValid;
     }
  
-    // Prevents users from entering only spaces while typing
+    // Prevents only spaces  typing
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('input', function () {
             if (/^\s+$/.test(this.value)) {
-                this.value = ''; // Clear the field
+                this.value = ''; 
                 Swal.fire({
                     title: 'Error',
                     text: 'Only spaces are not allowed!',
