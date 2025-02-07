@@ -1,7 +1,7 @@
 <%-include("../../views/partials/user/header")%>
 <div class="container mt-4">
    <h3 class="mt-3" style="color: #046963; margin-bottom:70px">Edit User Address</h3>
-   <form id="addressForm" method="POST" action="/editAddress?id=<%= address._id.toLocaleString() %>" class="border-0 p-3">
+   <form id="addressForm" method="POST" action="" class="border-0 p-3">
        <div class="row mb-50">
            <div class="form-group col-md-4">
                <label for="addressType">Address Type:</label>
@@ -45,72 +45,108 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     document.getElementById('submitButton').addEventListener('click', function (event) {
-        if (!validateForm()) {
-            event.preventDefault();
-        }
-    });
- 
+    event.preventDefault(); // Prevent default form submission
+
+    if (validateForm()) {
+        const form = document.getElementById('addressForm');
+        const formData = new FormData(form);
+        const addressId = new URLSearchParams(window.location.search).get("id"); // Get ID from URL
+
+        $.ajax({
+            url: `/editAddress?id=${addressId}`,  // Send ID as query param
+            type: "POST",
+            data: new URLSearchParams(formData).toString(), // Convert FormData to string
+            contentType: "application/x-www-form-urlencoded", 
+            success: function (response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.href = `/profile/${response.userId}`; // Redirect after success
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.message,
+                        icon: 'error'
+                    });
+                }
+            },
+            error: function (error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong. Please try again.',
+                    icon: 'error'
+                });
+            }
+        });
+    }
+});
+
+
     function validateForm() {
         let isValid = true;
         let errorMessages = [];
         const requiredFields = ["addressType", "name", "city", "landMark", "state", "pincode", "phone", "altPhone"];
-        
+
         for (let field of requiredFields) {
             const input = document.getElementById(field);
-            input.value = input.value.trim(); //Remove space 
- 
-            if (!input.value) { 
+            input.value = input.value.trim(); // Remove spaces
+
+            if (!input.value) {
                 errorMessages.push(`${field} cannot be empty or spaces only.`);
                 isValid = false;
             }
         }
- 
-        // pincode validation (must be 6)
+
+        // Pincode validation (must be 6 digits)
         const pincode = document.getElementById("pincode").value.trim();
         if (!/^\d{6}$/.test(pincode)) {
             errorMessages.push('Pincode must be exactly 6 digits.');
             isValid = false;
         }
- 
-        //Validate phone number (must be 10)
+
+        // Validate phone numbers (must be 10 digits)
         const phone = document.getElementById("phone").value.trim();
         const altPhone = document.getElementById("altPhone").value.trim();
- 
+
         if (!/^\d{10}$/.test(phone)) {
             errorMessages.push('Phone number must be exactly 10 digits.');
             isValid = false;
         }
- 
+
         if (!/^\d{10}$/.test(altPhone)) {
             errorMessages.push('Alternate phone number must be exactly 10 digits.');
             isValid = false;
         }
- 
-        //prevent duplicate phone numbers
+
+        // Prevent duplicate phone numbers
         if (phone === altPhone) {
             errorMessages.push('Phone number and alternate phone number cannot be the same.');
             isValid = false;
         }
- 
-    
+
         if (!isValid) {
             Swal.fire({
                 title: 'Validation Error',
-                html: errorMessages.join('<br>'), //show multiple errors
+                html: errorMessages.join('<br>'), // Show multiple errors
                 icon: 'error'
             });
         }
- 
+
         return isValid;
     }
- 
-    // Prevents only spaces  typing
+
+    // Prevents only spaces typing
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('input', function () {
             if (/^\s+$/.test(this.value)) {
-                this.value = ''; 
+                this.value = '';
                 Swal.fire({
                     title: 'Error',
                     text: 'Only spaces are not allowed!',
@@ -119,7 +155,7 @@
             }
         });
     });
- </script>
+</script>
  
  
  

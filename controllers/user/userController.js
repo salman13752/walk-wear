@@ -429,15 +429,16 @@ const postEditAddress = async (req, res) => {
   try {
     const data = req.body;
     const addressId = req.query.id;
-    const user = req.session.user;
-    
+    const userId = req.session.user; // Get user ID from session
 
+    // Find the address
     const findAddress = await Address.findOne({ "address._id": addressId });
 
-    if (!findAddress) {
-      res.redirect("/page-not-found")
+    if (!findAddress || !findAddress.address) {
+      return res.status(401).json({ success: false, message: "Address update failed. Address not found." });
     }
 
+    // Update the address
     await Address.updateOne(
       { "address._id": addressId },
       {
@@ -455,15 +456,15 @@ const postEditAddress = async (req, res) => {
           }
         }
       }
-    )
-    res.redirect(`/profile/${user}`)
+    );
+
+    res.status(200).json({ success: true, message: "Address updated successfully!", userId });
 
   } catch (error) {
-console.log("Error in addressEdit page",error);
-res.redirect("/page-not-found")
-
+    console.error("Error in addressEdit page:", error);
+    res.status(500).json({ success: false, message: "Internal server error. Please try again later." });
   }
-}
+};
 
 
 const deleteAddress = async (req, res) => {
