@@ -143,19 +143,23 @@
 </head>
 <body>
     <div class="edit-container">
-        <div class="edit-header">
-            <div class="profile-picture">
-                <i class="fas fa-user-circle fa-5x" style="color: var(--primary-color);"></i>
-            </div>
-            <h1 class="h3 mb-3">Edit Profile</h1>
-            <div class="upload-btn text-center">
-                <i class="fas fa-camera me-2"></i>
-                Change Profile Picture
-            </div>
-        </div>
 
         <div class="edit-form">
-            <form id="userForm" action="/userUpdate/<%=user._id%>" method="POST">
+            <form id="userForm" action="/userUpdate/<%=user._id%>" enctype="multipart/form-data" method="POST">
+                <div class="edit-header">
+                    <div class="profile-picture">
+                        <i class="fas fa-user-circle fa-5x" style="color: var(--primary-color);"></i>
+                    </div>
+                    <h1 class="h3 mb-3">Edit Profile</h1>
+                    <div class="upload-btn text-center">
+                        <label for="profileImage">
+                            <i class="fas fa-camera me-2"></i>
+                            Change Profile Picture
+                        </label>
+                        
+                        <input type="file" name="profileImage" accept="image/*">
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="form-label">Full Name</label>
                     <div class="input-group">

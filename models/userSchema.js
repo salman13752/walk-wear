@@ -13,6 +13,10 @@ const userSchema = new Schema({
         required:false,
         unique: true,
     },
+    profileImage:{
+        type:String,
+        default:"",
+    },
     phone : {
         type : String,
         required: false,

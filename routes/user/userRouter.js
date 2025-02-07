@@ -7,6 +7,9 @@ const cartController = require("../../controllers/user/cartController");
 const orderController = require("../../controllers/user/orderController")
 const shopController = require("../../controllers/user/shopController")
 const userAuth = require("../../middlewares/userAuth")
+const multer = require("multer");
+const storage = require("../../helpers/multer");
+const uploads = multer({ storage: storage });
 //page not found route
 userRoute.get("/page-not-found", userController.pageNotFound);
 
@@ -52,8 +55,7 @@ userRoute.get("/productDetails/combo/:id", productController.loadComboDetails);
 // for user profile
 userRoute.get('/profile/:id', userAuth, userController.showUserProfile);
 userRoute.get('/profile/edit/:id', userAuth, userController.editProfile);
-userRoute.post("/userUpdate/:id", userAuth, userController.updateProfile);
-
+userRoute.post("/userUpdate/:id", userAuth, uploads.single("profileImage"), userController.updateProfile);  
 
 //for cart details
 userRoute.get("/cart", userAuth, cartController.getCart);

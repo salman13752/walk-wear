@@ -8,6 +8,7 @@ const Product = require('../../models/productSchema'); // Product model for Mong
 const Category = require('../../models/categorySchema'); // Category model for MongoDB
 const Address = require("../../models/addressSchema")
 const Order = require("../../models/orderScheema")
+const cloudinary = require("../../config/cloudinary");
 
 
 // Page Not Found Handler
@@ -307,24 +308,43 @@ const editProfile = async (req, res) => {
 
   
 const updateProfile = async (req, res) => {
-  const { name, email, address } = req.body;
+  console.log(req.body); // Log text fields
+  console.log(req.file); // Log uploaded file details
+
+  const { name, phone } = req.body;
+  const id = req.params.id;
 
   try {
-    const id = req.params.id;
-       const updatedUser = await User.findByIdAndUpdate(
-          id,
-          { name, email, address },
-          { new: true }
-      );
+    let profileImageUrl = null;
 
-      if (!updatedUser) {
-          return res.status(404).send('User not found');
-      }
+    // Check if a file is uploaded
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "profile_images",
+      });
 
-      res.redirect('/'); // After updating, redirect to the profile page
+      profileImageUrl = result.secure_url;
+    }
+
+    if (!id) {
+      return res.status(404).send("User not found");
+    }
+
+    const updateField = {
+      name,
+      phone,
+    };
+
+    if (profileImageUrl) {
+      updateField.profileImage = profileImageUrl;
+    }
+
+    await User.updateOne({ _id: id }, { $set: updateField });
+
+    res.redirect("/"); // After updating, redirect to the profile page
   } catch (err) {
-      console.error(err);
-      res.status(500).send('Error updating profile');
+    console.error(err);
+    res.status(500).send("Error updating profile");
   }
 };
 
