@@ -76,6 +76,7 @@ userRoute.get("/filter", shopController.filterProduct)
 userRoute.get("/filterPrice", shopController.filterByPrice)
 
 
+userRoute.get("/products",shopController.sortProduct)
 
 //for search 
 userRoute.post("/Search", shopController.searchProducts)
@@ -92,3 +93,5 @@ userRoute.get("/deletAddress", userAuth, userController.deleteAddress)
 // for oders page
 
 userRoute.get("/Orders", userAuth, userController.loadOrder)
+
+

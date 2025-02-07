@@ -6,6 +6,7 @@ const adminAuth = require('../../middlewares/adminAuth');
 const catController = require('../../controllers/admin/categoryController');
 const productController = require('../../controllers/admin/productController');
 const brandController = require("../../controllers/admin/brandController");
+const orderController = require("../../controllers/admin/orderController")
 //for multer 
 const multer = require("multer");
 const storage = require("../../helpers/multer");
@@ -58,5 +59,12 @@ router.get("/brands",adminAuth,brandController.getBrandPage);
 router.post("/addbrands", uploads.single("image"), brandController.addBrand);
 router.get("/blockBrand", brandController.blockBrand);
 router.post("/deleteBrand/:id",brandController.deleteBrand);
+
+//for order route
+router.get("/orders", orderController.getOrders);
+router.post("/orders/:id", orderController.updateOrderStatus);
+router.get('/details/:id', orderController.getOrderDetails);
+
+
 
 module.exports = router;

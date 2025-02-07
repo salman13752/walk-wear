@@ -1,155 +1,80 @@
 <%-include("../../views/partials/user/header")%>
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
-    rel="stylesheet">
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-
-<style>
-    /* Product listing container */
-.product__filter {
-    display: flex;
-    flex-wrap: wrap;
-     /* Adds spacing between cards */
-}
-
-
-.product-cart-wrap {
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
-    overflow: hidden; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    transition: transform 0.3s, box-shadow 0.3s; 
-    background: #fff;
-}
-
-
-.product-cart-wrap:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
-}
-
-
-.product-img img {
-    max-width: 100%;
-    height: 10rem;
-    display: block;
-    border-bottom: 1px solid #ddd; 
-}
-
-
-.product-content-wrap {
-    text-align: center;
-    padding: 1rem;
-    font-family: Arial, sans-serif;
-}
-
-
-.product-name {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-
-.product-price {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 0.5rem;
-}
-
-
-.product-size-color {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    font-size: 0.9rem;
-    padding: 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-
-@media (max-width: 768px) {
-    .product-cart-wrap {
-        flex: 1 1 calc(50% - 1rem);
-    }
-}
-
-@media (max-width: 576px) {
-    .product-cart-wrap {
-        flex: 1 1 calc(100% - 1rem);
-    }
-}
-
-</style>
-
+<!-- Css Styles -->
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+<link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+<link rel="stylesheet" href="css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="css/style.css" type="text/css">
+<link rel="stylesheet" href="../../css/shop.css">
 
 
 
 </head>
-  
-    <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>Shop</h4>
-                        <div class="breadcrumb__links">
-                            <a href="/">Home</a>
-                            <span>Shop</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Shop</h4>
+          <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>Shop</span>
+          </div>
         </div>
-    </section>
-   
-    <section class="shop spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="shop__sidebar">
-                        <div class="shop__sidebar__search">
-                            <form action="/Search" method="POST">
-                                <input type="text" name="Search" placeholder="Search...">
-                                <button type="submit"><span class="icon_search"></span></button>
-                            </form>
-                        </div>
-                        <div class="shop__sidebar__accordion">
-                            <div class="accordion" id="accordionExample">
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__categories">
-                                                <ul class="nice-scroll">
-                                                    <%for (let i = 0; i<category.length; i++){ %>
-                                                    <li><a href="/filter?category=<%=category[i]._id%>"><%= category[i].name %></a></li>
-                                                  <%}%>
+      </div>
+    </div>
+  </div>
+</section>
+
+<form method="GET" action="/products" class="m-3" onsubmit="return validateForm()">
+  <div class="form-group">
+    <select name="sort" class="form-control">
+      <option value="lowToHigh">Price: Low to High</option>
+      <option value="highToLow">Price: High to Low</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Sort</button>
+</form>
+
+
+<section class="shop spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+
+        <div class="shop__sidebar">
+
+          <div class="shop__sidebar__search">
+            <form action="/Search" method="POST">
+              <input type="text" name="Search" placeholder="Search...">
+              <button type="submit"><span class="icon_search"></span></button>
+            </form>
+          </div>
+
+
+
+          <div class="shop__sidebar__accordion">
+            <div class="accordion" id="accordionExample">
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                  <div class="card-body">
+                    <div class="shop__sidebar__categories">
+                      <ul class="nice-scroll">
+                        <%for (let i=0; i<category.length; i++){ %>
+                        <li><a href="/filter?category=<%=category[i]._id%>">
+                            <%= category[i].name %>
+                          </a></li>
+                        <%}%>
                                                 </ul>
                                             </div>
                                         </div>
@@ -163,9 +88,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__brand">
                                                 <ul>
-                                                    <%for (let i = 0; i<brand.length; i++){%>
-                                                    <li><a href="/filter?brand=<%=brand[i]._id%>"><%=brand[i].brandName%></a></li>
-                                                    <%}%>
+                                                    <%for (let i=0; i<brand.length; i++){%>
+                        <li><a href="/filter?brand=<%=brand[i]._id%>">
+                            <%=brand[i].brandName%>
+                          </a></li>
+                        <%}%>
                                                 </ul>
                                             </div>
                                         </div>
@@ -179,11 +106,13 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                <li><a href="filterPrice?gt=0&lt=500">₹0.00 - ₹500.00</a></li>
+                                                    <li><a href="filterPrice?gt=0&lt=500">₹0.00 - ₹500.00</a></li>
                                                     <li><a href="filterPrice?gt=500&lt=1000">₹500.00 - ₹1000.00</a></li>
-                                                    <li><a href="filterPrice?gt=1000&lt=1500">₹1000.00 - ₹1500.00</a></li>
-                                                    <li><a href="filterPrice?gt=1500&lt=10000">₹1500.00 - ₹10000.00</a></li>
-                                                    
+                                                    <li><a href="filterPrice?gt=1000&lt=1500">₹1000.00 - ₹1500.00</a>
+                                                    </li>
+                                                    <li><a href="filterPrice?gt=1500&lt=10000">₹1500.00 - ₹10000.00</a>
+                                                    </li>
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -211,9 +140,9 @@
                                                 <label for="2xl">8
                                                     <input type="radio" id="2xl">
                                                 </label>
-                                                
-                                               
-                                               
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -225,7 +154,7 @@
                                     <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__color">
-                                              
+
                                             </div>
                                         </div>
                                     </div>
@@ -257,12 +186,12 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                  
+
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
-                                  
+
                                     <select>
                                         <option value=""></option>
                                         <option value="">$0 - $55</option>
@@ -277,82 +206,99 @@
 
 
                     <div class="row product__filter">
-                        <% for (let i = 0; i < product.length; i++) { %>
-                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                                <div class="product-cart-wrap mb-4">
-                                    <div class="product-img-action-wrap position-relative">
-                                        <div class="product-img product-img-zoom">
-                                            <a href="/productDetails/<%= product[i]._id %>">
-                                                <img class="img-fluid rounded" src="<%= product[i].productImage[0] %>" alt="<%= product[i].productName %>">
-                                            </a>
-                                        </div>
-                                       
-                                    </div>
-                    
-                                    <div class="product-content-wrap text-center p-3">
-                                        <h6 class="product-name mb-2"><%= product[i].productName %></h6>
-                    
-                                        <% if (product[i].combos && product[i].combos.length > 0) { %>
-                                            <% for (let j = 0; j < product[i].combos.length; j++) { %>
-                                                <h5 class="product-price mb-2">₹<%= product[i].combos[j].salePrice %></h5>
-                                                <p class="product-size-color mb-1">Size: <%= product[i].combos[j].Size %></p>
-                                                <p class="product-size-color mb-3">Colour: <%= product[i].combos[j].Colour %></p>
-            
-                                                <% break; %>
-                                            <% } %>
-                                        <% } else { %>
-                                            <h5 class="product-price mb-2">₹ Not Available</h5>
-                                        <% } %>
-                
-                                        
-                                        <button class="btn btn-primary btn-sm w-100" onclick="addToCart('<%=product[i]._id%>','<%=product[i].combos[0]._id%>')" >Add to Cart</button>
-                                        
-                                    </div>
-                                </div>
+                        <% for (let i=0; i < product.length; i++) { %>
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                          <div class="product-cart-wrap mb-4">
+                            <div class="product-img-action-wrap position-relative">
+                              <div class="product-img product-img-zoom">
+                                <a href="/productDetails/<%= product[i]._id %>">
+                                  <img class="img-fluid rounded" src="<%= product[i].productImage[0] %>" alt="<%= product[i].productName %>">
+                                </a>
+                              </div>
+
                             </div>
-                        <% } %>
-                        
-                    </div>
-                </div>         
+
+                            <div class="product-content-wrap text-center p-3">
+                              <h6 class="product-name mb-2">
+                                <%= product[i].productName %>
+                              </h6>
+
+                              <% if (product[i].combos && product[i].combos.length> 0) { %>
+                              <% for (let j=0; j < product[i].combos.length; j++) { %>
+                              <h5 class="product-price mb-2">₹<%= product[i].combos[j].salePrice %>
+                              </h5>
+                              <p class="product-size-color mb-1">Size: <%= product[i].combos[j].Size
+                                                        %>
+                              </p>
+                              <p class="product-size-color mb-3">Colour: <%=
+                                                        product[i].combos[j].Colour %>
+                              </p>
+
+                              <% break; %>
+                              <% } %>
+                              <% } else { %>
+                              <h5 class="product-price mb-2">₹ Not Available</h5>
+                              <% } %>
+
+
+                              <button class="btn btn-primary btn-sm w-100" onclick="addToCart('<%=product[i]._id%>','<%=product[i].combos[0]._id%>')">Add to Cart</button>
                             </div>
+                          </div>
                         </div>
+                        <% } %>
+
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
-    <!-- Shop Section End -->
-    <div class="pagination">
-        <% if (currentPage > 1) { %>
-          <a class="btn" href="/shop?page=<%= currentPage - 1 %>">Prev</a>
-        <% } %>
-        
-   
-        <% for (let i = 1; i <= totalPages; i++) { %>
-          <a class="btn <%= currentPage === i ? 'active' : '' %>" href="/shop?page=<%= i %>"><%= i %></a>
-        <% } %>
-   
-   
-        <% if (currentPage < totalPages) { %>
-          <a class="btn" href="/shop?page=<%= currentPage + 1 %>">Next</a>
-        <% } %>
       </div>
+</section>
+<!-- Shop Section End -->
+<div class="pagination">
+  <% if (currentPage> 1) { %>
+  <a class="btn" href="/shop?page=<%= currentPage - 1 %>">Prev</a>
+  <% } %>
 
-    <%-include("../../views/partials/user/footer")%>
 
-    <!-- Js Plugins -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-     <script src="../../user.js/main.js"></script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+  <% for (let i=1; i <=totalPages; i++) { %>
+  <a class="btn <%= currentPage === i ? 'active' : '' %>" href="/shop?page=<%= i %>">
+    <%= i %>
+  </a>
+  <% } %>
+
+
+  <% if (currentPage < totalPages) { %>
+  <a class="btn" href="/shop?page=<%= currentPage + 1 %>">Next</a>
+  <% } %>
+</div>
+
+<%-include("../../views/partials/user/footer")%>
+
+<!-- Js Plugins -->
+<script>
+  function validateForm() {
+    const sortOption = document.querySelector('select[name="sort"]').value;
+    if (!sortOption) {
+      alert('Please select a sorting option!');
+      return false; // Prevent form submission
+    }
+    return true; // Allow form submission
+  }
+</script>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/jquery.nicescroll.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/jquery.countdown.min.js"></script>
+<script src="js/jquery.slicknav.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../user.js/main.js"></script>
 </body>
 
 </html>

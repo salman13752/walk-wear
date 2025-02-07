@@ -100,7 +100,7 @@ const placeOrder = async (req, res) => {
       const userId = req.session.user;
       const { selectedAddress, paymentMethod } = req.body;
    
-  
+  console.log(selectedAddress)
       if (!selectedAddress || !paymentMethod) {
         return res
           .status(400)

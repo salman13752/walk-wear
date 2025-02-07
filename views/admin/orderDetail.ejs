@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Details</title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div class="container mt-5">
+    <div class="card shadow p-4">
+      <h1 class="text-center mb-4">Order Details</h1>
+      
+      <div class="mb-3">
+        <p><strong>Order ID:</strong> <%= order.orderId %></p>
+        <p><strong>Invoice Date:</strong> <%= order.invoiceDate ? new Date(order.invoiceDate).toLocaleDateString() : 'Not Available' %></p>
+        <p><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
+        <% if (selectedAddress) { %>
+            <div class="card p-3 shadow-sm border rounded bg-dark text-white">
+              <h5 class="mb-3"><strong>Shipping Address</strong></h5>
+              <p><strong>Name:</strong> <%= selectedAddress.name %></p>
+              <p><strong>City:</strong> <%= selectedAddress.city %></p>
+              <p><strong>Landmark:</strong> <%= selectedAddress.landMark %></p>
+              <p><strong>State:</strong> <%= selectedAddress.state %></p>
+              <p><strong>Pincode:</strong> <%= selectedAddress.pincode %></p>
+              <p><strong>Phone:</strong> <%= selectedAddress.phone %></p>
+              <p><strong>Alternate Phone:</strong> <%= selectedAddress.altPhone %></p>
+            </div>
+          <% } else { %>
+            <div class="card p-3 shadow-sm border rounded text-center">
+              <h5 class="mb-3"><strong>Shipping Address</strong></h5>
+              <p>No address provided</p>
+            </div>
+          <% } %>
+          
+      </div>
+
+      <h3 class="mt-4">Ordered Items</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>Product Name</th>
+              <th>Size</th>
+              <th>Colour</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total Price</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order.orderedItems.forEach(item => { %>
+              <tr>
+                <td><%= item.productName %></td>
+                <td><%= item.Size %></td>
+                <td><%= item.Colour %></td>
+                <td><%= item.quantity %></td>
+                <td>₹<%= item.price %></td>
+                <td>₹<%= item.totalPrice %></td>
+                <td>
+                  <span class="badge bg-success"><%= item.status %></span>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="mt-4">Order Summary</h3>
+      <ul class="list-group">
+        <li class="list-group-item"><strong>Total Price:</strong> ₹<%= order.totalPrice %></li>
+        <li class="list-group-item"><strong>Discount:</strong> ₹<%= order.discount %></li>
+        <li class="list-group-item"><strong>Final Amount:</strong> ₹<%= order.FinalAmount %></li>
+      </ul>
+
+      <h3 class="mt-4">Order Status</h3>
+      <p class="fs-5"><strong>Status:</strong> <span class="text-primary"><%= order.status %></span></p>
+
+      <p><strong>Coupon Applied:</strong> 
+        <span class="badge bg-<%= order.couponApplied ? 'success' : 'danger' %>">
+          <%= order.couponApplied ? 'Yes' : 'No' %>
+        </span>
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

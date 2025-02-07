@@ -28,7 +28,6 @@ const loadshop = async (req, res) => {
             combos: { $elemMatch: { quantity: { $gt: 0 } } }, 
         }).sort({ createdOn: -1 }).skip(skip).limit(limit);
 
-       
         
         
 
@@ -52,7 +51,9 @@ const loadshop = async (req, res) => {
             brand:brands,
             totalproducts:totalProducts, // output 0
             currentPage:page,
-            totalPages:totalPages
+            totalPages:totalPages,
+           
+
         });
     } catch (error) {
         res.redirect("/pageNotFound");
@@ -157,7 +158,7 @@ const filterByPrice = async (req, res) => {
         const userData = await User.findOne({ _id: user });
         const brands = await brand.find({}).lean();
         const categories = await category.find({ isListed: true }).lean();
-        console.log("gt:", req.query.gt, "lt:", req.query.lt);
+       
 
         let findProducts = await Product.find({
             "combos.salePrice": { $gt: req.query.gt, $lt: req.query.lt },
@@ -249,6 +250,48 @@ const searchProducts = async (req, res) => {
     }
 };
 
+const sortProduct = async (req, res) => {
+    try {
+        const sortOption = req.query.sort; 
+        let sortQuery;
+        // Set the sort query based on the sort option
+        if (sortOption === 'lowToHigh') {
+            sortQuery = {"combos.salePrice": 1};  // 1 means ascending order
+        } else if (sortOption === 'highToLow') {
+            sortQuery = { "combos.salePrice": -1 }; // -1 means descending order
+        } else {
+            sortQuery = {};  // Default: no sorting
+        }
+         
+
+
+
+        // Fetch sorted products from MongoDB
+        const sortedProducts = await Product.find().sort(sortQuery);
+        const categories = await category.find({ isListed: true });
+       
+        const brands = await brand.find({isBlocked:false})
+        
+       
+        
+        
+        
+        // Render the products page with sorted products
+        res.render('shop', {
+             product: sortedProducts,
+             category:categories,
+             brand:brands,
+             currentPage:0,
+             totalPages:0,
+             
+             });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Server Error');
+    }
+};
+
 
 
 
@@ -257,5 +300,6 @@ module.exports={
     loadshop,
     filterProduct,
     filterByPrice,
-    searchProducts
+    searchProducts,
+    sortProduct
 }

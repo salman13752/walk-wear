@@ -23,6 +23,10 @@ if(nameval.trim()==""){
 }else{
     error1.style.display="none"
     error1.innerHTML = "";
+
+
+
+    
 }
 
 }

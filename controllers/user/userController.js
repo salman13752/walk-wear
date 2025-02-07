@@ -263,7 +263,7 @@ const logout = async (req, res) => {
   };
 
 
-                                                                                    // for user profile
+   
 
   const showUserProfile = async (req, res) => {
     try {
