@@ -33,247 +33,223 @@
   </div>
 </section>
 
-<form method="GET" action="/products" class="m-3" onsubmit="return validateForm()">
-  <div class="form-group">
-    <select name="sort" class="form-control">
-      <option value="lowToHigh">Price: Low to High</option>
-      <option value="highToLow">Price: High to Low</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Sort</button>
-</form>
-
-
-<section class="shop spad">
+<!-- Shop Section Begin -->
+<section class="shop">
   <div class="container">
     <div class="row">
+      <!-- Shop Sidebar -->
       <div class="col-lg-3">
-
         <div class="shop__sidebar">
+          <form method="GET" action="/shop" id="filterForm">
+            <button class="btn btn-primary text-white"> <a href="/shop">clear Filters</a> </button>
+            <!-- Sort Dropdown -->
+            <div class="shop__sidebar__accordion">
+              <select name="sort" class="form-control" onchange="document.getElementById('filterForm').submit()">
+                <option value="priceLowToHigh" <%= selectedSort === 'priceLowToHigh' ? 'selected' : '' %>>Price: Low to High</option>
+                <option value="priceHighToLow" <%= selectedSort === 'priceHighToLow' ? 'selected' : '' %>>Price: High to Low</option>
+                <option value="alphabeticalAZ" <%= selectedSort === 'alphabeticalAZ' ? 'selected' : '' %>>Alphabets: A-Z</option>
+                <option value="alphabeticalZA" <%= selectedSort === 'alphabeticalZA' ? 'selected' : '' %>>Alphabets: Z-A</option>
+                <option value="newArrivals" <%= selectedSort === 'newArrivals' ? 'selected' : '' %>>New Arrivals</option>
+                <option value="oldArrivals" <%= selectedSort === 'oldArrivals' ? 'selected' : '' %>>Old Arrivals</option>
+              </select>
+            </div>            
 
-          <div class="shop__sidebar__search">
-            <form action="/Search" method="POST">
-              <input type="text" name="Search" placeholder="Search...">
-              <button type="submit"><span class="icon_search"></span></button>
-            </form>
-          </div>
+            <!-- Search Bar -->
+            <div class="shop__sidebar__search">
+              <input type="text" name="search" placeholder="Search..." 
+                onkeypress="if(event.key === 'Enter') document.getElementById('filterForm').submit()">
+            </div>
 
-
-
-          <div class="shop__sidebar__accordion">
-            <div class="accordion" id="accordionExample">
+            <!-- Category Filter -->
+            <div class="shop__sidebar__accordion">
               <div class="card">
                 <div class="card-heading">
                   <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
                 </div>
-                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                <div id="collapseOne" class="collapse show">
                   <div class="card-body">
-                    <div class="shop__sidebar__categories">
-                      <ul class="nice-scroll">
-                        <%for (let i=0; i<category.length; i++){ %>
-                        <li><a href="/filter?category=<%=category[i]._id%>">
-                            <%= category[i].name %>
-                          </a></li>
-                        <%}%>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__brand">
-                                                <ul>
-                                                    <%for (let i=0; i<brand.length; i++){%>
-                        <li><a href="/filter?brand=<%=brand[i]._id%>">
-                            <%=brand[i].brandName%>
-                          </a></li>
-                        <%}%>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__price">
-                                                <ul>
-                                                    <li><a href="filterPrice?gt=0&lt=500">₹0.00 - ₹500.00</a></li>
-                                                    <li><a href="filterPrice?gt=500&lt=1000">₹500.00 - ₹1000.00</a></li>
-                                                    <li><a href="filterPrice?gt=1000&lt=1500">₹1000.00 - ₹1500.00</a>
-                                                    </li>
-                                                    <li><a href="filterPrice?gt=1500&lt=10000">₹1500.00 - ₹10000.00</a>
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
-                                    </div>
-                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__size">
-                                                <label for="xs">4
-                                                    <input type="radio" id="xs">
-                                                </label>
-                                                <label for="sm">5
-                                                    <input type="radio" id="sm">
-                                                </label>
-                                                <label for="md">6
-                                                    <input type="radio" id="md">
-                                                </label>
-                                                <label for="xl">7
-                                                    <input type="radio" id="xl">
-                                                </label>
-                                                <label for="2xl">8
-                                                    <input type="radio" id="2xl">
-                                                </label>
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
-                                    </div>
-                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__color">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
-                                    </div>
-                                    <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__tags">
-                                                <a href="#">Product</a>
-                                                <a href="#">Bags</a>
-                                                <a href="#">Shoes</a>
-                                                <a href="#">Fashio</a>
-                                                <a href="#">Clothing</a>
-                                                <a href="#">Hats</a>
-                                                <a href="#">Accessories</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="shop__product__option">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__left">
-
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__right">
-
-                                    <select>
-                                        <option value=""></option>
-                                        <option value="">$0 - $55</option>
-                                        <option value="">$55 - $100</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="row product__filter">
-                        <% for (let i=0; i < product.length; i++) { %>
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                          <div class="product-cart-wrap mb-4">
-                            <div class="product-img-action-wrap position-relative">
-                              <div class="product-img product-img-zoom">
-                                <a href="/productDetails/<%= product[i]._id %>">
-                                  <img class="img-fluid rounded" src="<%= product[i].productImage[0] %>" alt="<%= product[i].productName %>">
-                                </a>
-                              </div>
-
-                            </div>
-
-                            <div class="product-content-wrap text-center p-3">
-                              <h6 class="product-name mb-2">
-                                <%= product[i].productName %>
-                              </h6>
-
-                              <% if (product[i].combos && product[i].combos.length> 0) { %>
-                              <% for (let j=0; j < product[i].combos.length; j++) { %>
-                              <h5 class="product-price mb-2">₹<%= product[i].combos[j].salePrice %>
-                              </h5>
-                              <p class="product-size-color mb-1">Size: <%= product[i].combos[j].Size
-                                                        %>
-                              </p>
-                              <p class="product-size-color mb-3">Colour: <%=
-                                                        product[i].combos[j].Colour %>
-                              </p>
-
-                              <% break; %>
-                              <% } %>
-                              <% } else { %>
-                              <h5 class="product-price mb-2">₹ Not Available</h5>
-                              <% } %>
-
-
-                              <button class="btn btn-primary btn-sm w-100" onclick="addToCart('<%=product[i]._id%>','<%=product[i].combos[0]._id%>')">Add to Cart</button>
-                            </div>
-                          </div>
-                        </div>
-                        <% } %>
-
-                    </div>
+                    <ul>
+                      <% for (let i = 0; i < category.length; i++) { %>
+                        <li>
+                          <input type="radio" name="category" value="<%= category[i]._id %>" 
+                            <%= selectedCategory == category[i]._id ? 'checked' : '' %> 
+                            onchange="document.getElementById('filterForm').submit()">
+                          <%= category[i].name %>
+                        </li>
+                      <% } %>
+                    </ul>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+
+            <!-- Brand Filter -->
+            <div class="shop__sidebar__accordion">
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
+                </div>
+                <div id="collapseTwo" class="collapse show">
+                  <div class="card-body">
+                    <ul>
+                      <% for (let i = 0; i < brand.length; i++) { %>
+                        <li>
+                          <input type="radio" name="brand" value="<%= brand[i]._id %>" 
+                            <%= selectedBrand == brand[i]._id ? 'checked' : '' %> 
+                            onchange="document.getElementById('filterForm').submit()">
+                          <%= brand[i].brandName %>
+                        </li>
+                      <% } %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="shop__sidebar__accordion">
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                </div>
+                <div id="collapseThree" class="collapse show">
+                  <div class="card-body">
+                    <ul>
+                      <li>
+                        <input type="radio" name="priceRange" value="0-500" 
+                          <%= selectedPriceRange === '0-500' ? 'checked' : '' %> 
+                          onchange="document.getElementById('filterForm').submit()"> ₹0 - ₹500
+                      </li>
+                      <li>
+                        <input type="radio" name="priceRange" value="500-1000" 
+                          <%= selectedPriceRange === '500-1000' ? 'checked' : '' %> 
+                          onchange="document.getElementById('filterForm').submit()"> ₹500 - ₹1000
+                      </li>
+                      <li>
+                        <input type="radio" name="priceRange" value="1000-1500" 
+                          <%= selectedPriceRange === '1000-1500' ? 'checked' : '' %> 
+                          onchange="document.getElementById('filterForm').submit()"> ₹1000 - ₹1500
+                      </li>
+                      <li>
+                        <input type="radio" name="priceRange" value="1500-10000" 
+                          <%= selectedPriceRange === '1500-10000' ? 'checked' : '' %> 
+                          onchange="document.getElementById('filterForm').submit()"> ₹1500 - ₹10000
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Size Filter -->
+            <div class="shop__sidebar__accordion">
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                </div>
+                <div id="collapseFour" class="collapse show">
+                  <div class="card-body">
+                    <ul>
+                      <% const sizes = ['S', 'M', 'L', 'XL', 'XXL']; %>
+                      <% sizes.forEach(size => { %>
+                        <li>
+                          <input type="radio" name="size" value="<%= size %>" 
+                            <%= selectedSize === size ? 'checked' : '' %> 
+                            onchange="document.getElementById('filterForm').submit()"> <%= size %>
+                        </li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Color Filter -->
+            <div class="shop__sidebar__accordion">
+              <div class="card">
+                <div class="card-heading">
+                  <a data-toggle="collapse" data-target="#collapseFive">Color</a>
+                </div>
+                <div id="collapseFive" class="collapse show">
+                  <div class="card-body">
+                    <ul>
+                      <% const colors = ['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow']; %>
+                      <% colors.forEach(color => { %>
+                        <li>
+                          <input type="radio" name="color" value="<%= color %>" 
+                            <%= selectedColor === color ? 'checked' : '' %> 
+                            onchange="document.getElementById('filterForm').submit()"> <%= color %>
+                        </li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
+
+      <!-- Product Grid -->
+      <div class="col-lg-9">
+        <div class="product__filter">
+          <% for (let i=0; i < product.length; i++) { %>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+              <div class="product-cart-wrap">
+                <div class="product-img-action-wrap">
+                  <div class="product-img">
+                    <a href="/productDetails/<%= product[i]._id %>">
+                      <img class="img-fluid" src="<%= product[i].productImage[0] %>" alt="<%= product[i].productName %>">
+                    </a>
+                  </div>
+                </div>
+
+                <div class="product-content-wrap">
+                  <h6 class="product-name">
+                    <%= product[i].productName %>
+                  </h6>
+
+                  <% if (product[i].combos && product[i].combos.length> 0) { %>
+                    <% for (let j=0; j < product[i].combos.length; j++) { %>
+                      <h5 class="product-price">₹<%= product[i].combos[j].salePrice %></h5>
+                      <p class="product-size-color">Size: <%= product[i].combos[j].Size %></p>
+                      <p class="product-size-color">Colour: <%= product[i].combos[j].Colour %></p>
+                      <% break; %>
+                    <% } %>
+                  <% } else { %>
+                    <h5 class="product-price">₹ Not Available</h5>
+                  <% } %>
+
+                  <button class="btn btn-primary" onclick="addToCart('<%=product[i]._id%>','<%=product[i].combos[0]._id%>')">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a class="btn" href="/shop?page=<%= currentPage - 1 %>">Prev</a>
+          <% } %>
+
+          <% for (let i=1; i <=totalPages; i++) { %>
+            <a class="btn <%= currentPage === i ? 'active' : '' %>" href="/shop?page=<%= i %>">
+              <%= i %>
+            </a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a class="btn" href="/shop?page=<%= currentPage + 1 %>">Next</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- Shop Section End -->
-<div class="pagination">
-  <% if (currentPage> 1) { %>
-  <a class="btn" href="/shop?page=<%= currentPage - 1 %>">Prev</a>
-  <% } %>
-
-
-  <% for (let i=1; i <=totalPages; i++) { %>
-  <a class="btn <%= currentPage === i ? 'active' : '' %>" href="/shop?page=<%= i %>">
-    <%= i %>
-  </a>
-  <% } %>
-
-
-  <% if (currentPage < totalPages) { %>
-  <a class="btn" href="/shop?page=<%= currentPage + 1 %>">Next</a>
-  <% } %>
-</div>
 
 <%-include("../../views/partials/user/footer")%>
 

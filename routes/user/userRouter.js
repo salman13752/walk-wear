@@ -71,7 +71,7 @@ userRoute.post("/ckeckOut", orderController.placeOrder);
 
 
 //for shopping page
-userRoute.get("/shop", shopController.loadshop)
+userRoute.get("/shop", shopController.loadShopPage)
 
 // for filtering 
 userRoute.get("/filter", shopController.filterProduct)
